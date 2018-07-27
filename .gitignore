@@ -3,3 +3,4 @@ tests/
 var/
 vendor/
 app/config/parameters.yml
+web/node_modules/*
