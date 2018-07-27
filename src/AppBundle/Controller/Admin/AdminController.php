@@ -12,6 +12,6 @@ class AdminController extends AppController
      */
     public function indexAction()
     {
-
+        return $this->render('@App/admin/layout/index.html.twig', []);
     }
 }

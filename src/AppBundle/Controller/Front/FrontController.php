@@ -12,7 +12,7 @@ class FrontController extends AppController
      */
     public function indexAction()
     {
-       return $this->renderFront('/layout/index', []);
+       return $this->renderFront('layout/index', []);
 
     }
 }

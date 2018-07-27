@@ -24,9 +24,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
     {% block css %}
         <link href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" media="all"/>
-        <link href="{{ asset('template/default/front/css/style.css') }}" rel="stylesheet" type="text/css" media="all"/>
-        <link rel="stylesheet" href="css/jquery.countdown.css"/>
-        <link href="css/animate.min.css" rel="stylesheet">
+        <link href="{{ get_asset('css', 'style.css') }}" rel="stylesheet" type="text/css" media="all"/>
+        {#<link rel="stylesheet" href="css/jquery.countdown.css"/>#}
+        {#<link href="css/animate.min.css" rel="stylesheet">#}
     {% endblock %}
 
     {% block fonts %}
@@ -42,10 +42,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <div class="header">
     <div class="container">
         {% block top_header %}
-            {% include '@App/default/front/partials/top_header.html.twig' %}
+            {% include '@App/template/default/partials/top_header.html.twig' %}
         {% endblock %}
         {% block header %}
-            {% include '@App/default/front/partials/header.html.twig' %}
+            {% include '@App/template/default/partials/header.html.twig' %}
         {% endblock %}
     </div>
 </div>
@@ -57,18 +57,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 <!-- footer -->
 {% block footer %}
-    {% include '@App/default/front/partials/footer.html.twig' %}
+    {% include '@App/template/default/partials/footer.html.twig' %}
 {% endblock %}
 <!-- //footer -->
 
 {% block javascript %}
     <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="js/simpleCart.min.js"></script>
-     <script src="js/wow.min.js"></script>
-    <script>
-        new WOW().init();
-    </script>
+    {#<script src="js/simpleCart.min.js"></script>#}
+     {#<script src="js/wow.min.js"></script>#}
+    {#<script>#}
+        {#new WOW().init();#}
+    {#</script>#}
 {% endblock %}
 </body>
 </html>

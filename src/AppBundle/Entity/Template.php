@@ -25,12 +25,6 @@ class Template
     private $name;
 
     /**
-     * @var string
-     * @ORM\Column()
-     */
-    private $sitePart;
-
-    /**
      * @var boolean
      * @ORM\Column(type="boolean")
      */
@@ -41,6 +35,14 @@ class Template
      * @ORM\Column(type="datetime")
      */
     private $dateUploaded;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @return string
@@ -57,24 +59,6 @@ class Template
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSitePart()
-    {
-        return $this->sitePart;
-    }
-
-    /**
-     * @param string $sitePart
-     * @return Template
-     */
-    public function setSitePart($sitePart)
-    {
-        $this->sitePart = $sitePart;
         return $this;
     }
 

@@ -8,8 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class AppController extends Controller
 {
-    public const FRONT_SITE_PART = 'front';
-
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
@@ -26,27 +24,27 @@ class AppController extends Controller
     }
 
     /**
-     * @param string $pathToFile
+     * @param string $fileName
      * @param array $parameters
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public final function renderFront(string $pathToFile, array $parameters = [])
+    public final function renderFront(string $fileName, array $parameters = [])
     {
-        $template = $this->getTemplate(self::FRONT_SITE_PART);
+        $template = $this->getActiveTemplate();
         $themeName = $template->getName();
-        $templateFilePath = '@App/'.$themeName.'/'.self::FRONT_SITE_PART.''.$pathToFile.'.html.twig';
 
-        return $this->render($templateFilePath, $parameters);
+        return $this->render(
+            $this->getFullTemplatePath($themeName, $fileName),
+            $parameters
+        );
     }
 
     /**
-     * @param string $sitePart
      * @return \AppBundle\Entity\Template
      */
-    private final function getTemplate(string $sitePart)
+    public final function getActiveTemplate()
     {
         $criteria = [
-            'sitePart' => $sitePart,
             'isActive' => true,
         ];
 
@@ -54,5 +52,23 @@ class AppController extends Controller
         $template = $this->entityManager->getRepository(Template::class)->findOneBy($criteria);
 
         return $template;
+    }
+
+    /**
+     * @param string $themeName
+     * @param $fileName
+     * @return mixed|string
+     */
+    private function getFullTemplatePath(string $themeName, $fileName)
+    {
+        $pattern = '@App/template/%theme_name%/%file_name%.html.twig';
+
+        $pattern = str_replace(
+            ['%theme_name%', '%file_name%'],
+            [$themeName, $fileName],
+            $pattern
+        );
+
+        return $pattern;
     }
 }
