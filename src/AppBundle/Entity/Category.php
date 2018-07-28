@@ -1,15 +1,18 @@
 <?php
 
+
 namespace AppBundle\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Class Category
  * @package AppBundle\Entity
  * @ORM\Entity()
- * @ORM\Table(name="templates")
+ * @ORM\Table(name="categories")
  * @ORM\HasLifecycleCallbacks()
  */
-class Template
+class Category
 {
     /**
      * @ORM\Id()
@@ -25,19 +28,20 @@ class Template
     private $name;
 
     /**
-     * @var boolean
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *
      */
-    private $isActive;
+    private $parent;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
      */
-    private $dateUploaded;
+    private $dateCreated;
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -47,54 +51,52 @@ class Template
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
      * @param string $name
-     * @return Template
+     * @return Category
      */
-    public function setName($name)
+    public function setName(string $name): Category
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return mixed
      */
-    public function isActive()
+    public function getParent()
     {
-        return $this->isActive;
+        return $this->parent;
     }
 
     /**
-     * @param bool $isActive
-     * @return Template
+     * @param mixed $parent
+     * @return Category
      */
-    public function setIsActive($isActive)
+    public function setParent($parent)
     {
-        $this->isActive = $isActive;
+        $this->parent = $parent;
         return $this;
     }
 
     /**
      * @return \DateTime
      */
-    public function getDateUploaded()
+    public function getDateCreated(): \DateTime
     {
-        return $this->dateUploaded;
+        return $this->dateCreated;
     }
 
     /**
      * @ORM\PrePersist()
      */
-    public function setDateUploaded()
+    public function setDateCreated()
     {
-        $this->dateUploaded = new \DateTime();
+        $this->dateCreated = new \DateTime();
     }
-
-
 }

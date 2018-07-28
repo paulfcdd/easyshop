@@ -16,7 +16,7 @@
         <li class="active">Dashboard</li>
     </ol>
     <div>
-        <a class="btn btn-app">
+        <a class="btn btn-app" href="{{ path('app.admin.category.add') }}">
             <i class="fa fa-plus"></i> New
         </a>
     </div>
@@ -33,32 +33,35 @@
                     <table id="example2" class="table table-bordered table-hover dataTable">
                         <thead>
                         <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Parent</th>
+                            <th>Date of create</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 4.0
-                            </td>
-                            <td>Win 95+</td>
-                            <td> 4</td>
-                            <td>X</td>
-                        </tr>
-                        <tr>
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 5.0
-                            </td>
-                            <td>Win 95+</td>
-                            <td>5</td>
-                            <td>C</td>
-                        </tr>
+                        {% for category in categories %}
+                            <tr>
+                                <td>{{ category.id }}</td>
+                                <td>{{ category.name }}</td>
+                                <td>{% if category.parent %}{{ category.parent.name }}{% endif %}</td>
+                                <td>{{ category.dateCreated | date('d.m.Y') }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-info">Action</button>
+                                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="{{ path('app.admin.category.edit', {'id': category.id}) }}">Edit</a></li>
+                                            <li><a href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                         <tfoot>
                         <tr>
