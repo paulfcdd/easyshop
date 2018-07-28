@@ -1,0 +1,14 @@
+dashboard:
+  route: 'app.admin.index'
+  icon: 'fa-tachometer'
+  title: 'Dashboard'
+  submenu: null
+
+category:
+  route: null
+  icon: 'fa-tag'
+  title: 'Category'
+  submenu:
+    list:
+      route: 'app.admin.category.list'
+      title: 'List'

@@ -1,0 +1,37 @@
+<ul class="sidebar-menu" data-widget="tree">
+    <li class="header">MAIN NAVIGATION</li>
+
+    {% set menu = render_menu('admin') %}
+
+    {% for menuItem in menu %}
+        {% set isSubmenu = false %}
+
+        {% if menuItem.submenu %}
+            {% set isSubmenu = true %}
+        {% endif %}
+
+        <li {% if isSubmenu %}class="treeview"{% endif %}>
+            <a href="{% if menuItem.route %}{{ path(menuItem.route) }}{% else %}#{% endif %}">
+                <i class="fa {{ menuItem.icon }}"></i>
+                <span>{{ menuItem.title }}</span>
+                {% if isSubmenu %}
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                {% endif %}
+            </a>
+            {% if isSubmenu %}
+                <ul class="treeview-menu">
+                    {% for submenuItem in menuItem.submenu %}
+                        <li>
+                            <a href="{{ path(submenuItem.route) }}">
+                                <i class="fa fa-circle-o"></i>{{ submenuItem.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
