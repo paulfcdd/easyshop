@@ -15,18 +15,32 @@
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Dashboard</li>
     </ol>
-    <div>
-        <a class="btn btn-app" href="{{ path('app.admin.category.add') }}">
-            <i class="fa fa-plus"></i> New
-        </a>
-    </div>
 {% endblock %}
 
 {% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
+                    <a href="{{ path('app.admin.category.add') }}"role="button" class="btn btn-success">Add category</a>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -36,6 +50,7 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Parent</th>
+                            <th>Visible in menu</th>
                             <th>Date of create</th>
                             <th>Actions</th>
                         </tr>
@@ -46,32 +61,25 @@
                                 <td>{{ category.id }}</td>
                                 <td>{{ category.name }}</td>
                                 <td>{% if category.parent %}{{ category.parent.name }}{% endif %}</td>
+                                <td>{{ category.showInMenu }}</td>
                                 <td>{{ category.dateCreated | date('d.m.Y') }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-info">Action</button>
-                                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{ path('app.admin.category.edit', {'id': category.id}) }}">Edit</a></li>
-                                            <li><a href="#">Delete</a></li>
-                                        </ul>
+                                        <a href="{{ path('app.admin.category.edit', {'id': category.id}) }}"
+                                           type="button" class="btn btn-success">
+                                            <span class="fa fa-edit"></span>
+                                            Edit
+                                        </a>
+                                        <a href="{{ path('app.admin.category.delete', {'id': category.id}) }}"
+                                           type="button" class="btn btn-danger">
+                                            <span class="fa fa-trash"></span>
+                                            Delete
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
                         {% endfor %}
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
                 <!-- /.box-body -->

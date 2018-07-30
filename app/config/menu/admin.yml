@@ -5,10 +5,7 @@ dashboard:
   submenu: null
 
 category:
-  route: null
+  route: 'app.admin.category.list'
   icon: 'fa-tag'
   title: 'Category'
-  submenu:
-    list:
-      route: 'app.admin.category.list'
-      title: 'List'
+  submenu: null

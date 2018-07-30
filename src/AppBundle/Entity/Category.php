@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Category
  * @package AppBundle\Entity
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  * @ORM\Table(name="categories")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -39,6 +39,30 @@ class Category
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $showInMenu;
+
+    /**
+     * @var string | null
+     * @ORM\Column(nullable=true)
+     */
+    private $metaTitle;
+
+    /**
+     * @var string | null
+     * @ORM\Column(nullable=true)
+     */
+    private $metaKeywords;
+
+    /**
+     * @var string | null
+     * @ORM\Column(nullable=true)
+     */
+    private $metaDescription;
 
     /**
      * @return int
@@ -98,5 +122,77 @@ class Category
     public function setDateCreated()
     {
         $this->dateCreated = new \DateTime();
+    }
+
+    /**
+     * @return bool | null
+     */
+    public function isShowInMenu(): ?bool
+    {
+        return $this->showInMenu;
+    }
+
+    /**
+     * @param bool $showInMenu
+     * @return Category
+     */
+    public function setShowInMenu(bool $showInMenu): Category
+    {
+        $this->showInMenu = $showInMenu;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMetaTitle(): ?string
+    {
+        return $this->metaTitle;
+    }
+
+    /**
+     * @param null|string $metaTitle
+     * @return Category
+     */
+    public function setMetaTitle(?string $metaTitle): Category
+    {
+        $this->metaTitle = $metaTitle;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMetaKeywords(): ?string
+    {
+        return $this->metaKeywords;
+    }
+
+    /**
+     * @param null|string $metaKeywords
+     * @return Category
+     */
+    public function setMetaKeywords(?string $metaKeywords): Category
+    {
+        $this->metaKeywords = $metaKeywords;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMetaDescription(): ?string
+    {
+        return $this->metaDescription;
+    }
+
+    /**
+     * @param null|string $metaDescription
+     * @return Category
+     */
+    public function setMetaDescription(?string $metaDescription): Category
+    {
+        $this->metaDescription = $metaDescription;
+        return $this;
     }
 }

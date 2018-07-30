@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Controller\AppController;
 use AppBundle\Entity\Category;
 use AppBundle\Form as Form;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,7 +28,8 @@ class CategoryController extends AppController
     /**
      * @Route("/admin/category/add", name="app.admin.category.add")
      */
-    public function renderNewCategoryFormAction() {
+    public function renderNewCategoryFormAction()
+    {
 
         $form = $this->getForm(
             Form\Category::class, [
@@ -48,7 +50,14 @@ class CategoryController extends AppController
      */
     public function renderEditCategoryFormAction(Category $category)
     {
-        $form = $this->getForm(Form\Category::class, [], null, $category);
+        $form = $this->getForm(
+            Form\Category::class,
+            ['action' => $this->generateUrl('app.admin.category.handle_form', [
+                'category' => $category->getId()
+            ])],
+            null,
+            $category
+        );
 
         return $this->render('@App/admin/category/manage.html.twig', [
             'form' => $form->createView(),
@@ -56,21 +65,24 @@ class CategoryController extends AppController
     }
 
     /**
-     * @Route("/admin/category/handle-form", name="app.admin.category.handle_form")
+     * @Route("/admin/category/handle-form/{category}", name="app.admin.category.handle_form", defaults={"category"=null})
+     * @Method("POST")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \AppBundle\Entity\Category|null $category
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function handleForm(Request $request)
+    public function handleFormAction(Request $request, ?Category $category)
     {
-
-        $form = $this->getForm(Form\Category::class, [], $request);
-
+        $form = $this->getForm(Form\Category::class, [], $request, $category);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
-            $this->entityManager->persist($formData);
+
+            if (!$category) {
+                $this->entityManager->persist($formData);
+            }
 
             try {
                 $this->entityManager->flush();
@@ -84,5 +96,25 @@ class CategoryController extends AppController
             }
 
         }
+    }
+
+    /**
+     * @Route("/admin/category/delete/{id}", name="app.admin.category.delete")
+     *
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteCategory(Category $category)
+    {
+        $this->entityManager->remove($category);
+        try {
+            $this->entityManager->flush();
+            $this->flashSuccess('Category removed');
+        } catch (\Exception $exception) {
+            $this->flashError($exception->getMessage());
+        }
+
+        return $this->redirectToRoute('app.admin.category.list');
     }
 }
