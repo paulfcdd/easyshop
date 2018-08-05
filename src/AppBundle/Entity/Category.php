@@ -1,9 +1,10 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\Traits as Traits;
 
 /**
  * Class Category
@@ -14,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+    use Traits\SeoTrait;
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")
@@ -47,22 +50,17 @@ class Category
     private $showInMenu;
 
     /**
-     * @var string | null
-     * @ORM\Column(nullable=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="category")
      */
-    private $metaTitle;
+    private $products;
 
     /**
-     * @var string | null
-     * @ORM\Column(nullable=true)
+     * Category constructor.
      */
-    private $metaKeywords;
-
-    /**
-     * @var string | null
-     * @ORM\Column(nullable=true)
-     */
-    private $metaDescription;
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -143,56 +141,38 @@ class Category
     }
 
     /**
-     * @return null|string
+     * @param \AppBundle\Entity\Product $product
+     * @return $this
      */
-    public function getMetaTitle(): ?string
+    public function addProduct(Product $product)
     {
-        return $this->metaTitle;
-    }
+        if (!$this->products->contains($product))
+        {
+            $this->products->add($product);
+        }
 
-    /**
-     * @param null|string $metaTitle
-     * @return Category
-     */
-    public function setMetaTitle(?string $metaTitle): Category
-    {
-        $this->metaTitle = $metaTitle;
         return $this;
     }
 
     /**
-     * @return null|string
+     * @param \AppBundle\Entity\Product $product
+     * @return $this
      */
-    public function getMetaKeywords(): ?string
+    public function removeProduct(Product $product)
     {
-        return $this->metaKeywords;
-    }
+        if ($this->products->contains($product))
+        {
+            $this->products->remove($product);
+        }
 
-    /**
-     * @param null|string $metaKeywords
-     * @return Category
-     */
-    public function setMetaKeywords(?string $metaKeywords): Category
-    {
-        $this->metaKeywords = $metaKeywords;
         return $this;
     }
 
     /**
-     * @return null|string
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getMetaDescription(): ?string
+    public function getProducts()
     {
-        return $this->metaDescription;
-    }
-
-    /**
-     * @param null|string $metaDescription
-     * @return Category
-     */
-    public function setMetaDescription(?string $metaDescription): Category
-    {
-        $this->metaDescription = $metaDescription;
-        return $this;
+        return $this->products;
     }
 }

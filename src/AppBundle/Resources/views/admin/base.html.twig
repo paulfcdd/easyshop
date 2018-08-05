@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="{{ asset('node_modules/jvectormap/jquery-jvectormap.css') }}">
         <link rel="stylesheet" href="{{ asset('admin_files/css/AdminLTE.min.css') }}">
         <link rel="stylesheet" href="{{ asset('admin_files/css/_all-skins.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('node_modules/datatables/media/css/jquery.dataTables.min.css') }}">
     {% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -35,9 +36,9 @@
         <!-- Logo -->
         <a href="index2.html" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-mini"><b>E</b>CM</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg"><b>Easy</b>CMS</span>
         </a>
 
         <!-- Header Navbar: style can be found in header.less -->
@@ -185,6 +186,25 @@
     <script src="dist/js/pages/dashboard2.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
+    <script src="{{ asset('node_modules/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+
+    <script>
+        $('.dataTable').DataTable({
+            'paging': true,
+            'lengthChange': false,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        });
+
+        $('.js-confirm-delete').on('click', function (e) {
+
+            if (!confirm('Are you sure you want to delete item?')) {
+                e.preventDefault();
+            }
+        })
+    </script>
 {% endblock %}
 
 </body>

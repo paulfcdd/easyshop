@@ -3,12 +3,13 @@
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
 {% block css %}
+    <link rel="stylesheet" href="{{ asset('node_modules/select2/dist/css/select2.min.css') }}" type="text/css">
     {{ parent() }}
 {% endblock %}
 
 {% block content_header %}
     <h1>
-        Manage category
+        Manage product
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -41,6 +42,11 @@
                         </a>
                     </li>
                     <li class="">
+                        <a href="#tab_data" data-toggle="tab" aria-expanded="false">
+                            Data
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="#tab_seo" data-toggle="tab" aria-expanded="false">
                             SEO
                         </a>
@@ -52,10 +58,31 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_general">
                             {{ form_row(form.name) }}
-                            {{ form_row(form.parent) }}
-                            {{ form_row(form.showInMenu) }}
+                            {{ form_row(form.description) }}
+                            {{ form_row(form.price) }}
+                            {{ form_row(form.model) }}
+                            {{ form_row(form.status) }}
                         </div>
                         <!-- /.tab-pane -->
+                        <div class="tab-pane" id="tab_data">
+                            {{ form_row(form.category) }}
+                            {#{{ form_row(form.tags) }}#}
+                            {#<select class="form-control" id="tag-selector" multiple="multiple">#}
+                                {#<option selected="selected">orange</option>#}
+                                {#<option>white</option>#}
+                                {#<option selected="selected">purple</option>#}
+                            {#</select>#}
+                            <div class="form-group">
+                                <select class="select-2-selector form-control" name="states[]" multiple="multiple">
+                                    <option value="AL">Alabama</option>
+                                    <option value="CA">California</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                            </div>
+                            {{ form_row(form.quantity) }}
+                            {{ form_row(form.minimumQuantity) }}
+                        </div>
                         <div class="tab-pane" id="tab_seo">
                             {{ form_row(form.metaTitle) }}
                             {{ form_row(form.metaKeywords) }}
@@ -73,4 +100,11 @@
 
 {% block js %}
     {{ parent() }}
+    <script src="{{ asset('node_modules/select2/dist/js/select2.full.min.js') }}"></script>
+    <script>
+        $('.select-2-selector').select2({
+            width: '100%',
+            'background-color': '#00f'
+        });
+    </script>
 {% endblock %}

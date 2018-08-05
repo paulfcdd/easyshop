@@ -4,8 +4,16 @@ dashboard:
   title: 'Dashboard'
   submenu: null
 
-category:
-  route: 'app.admin.category.list'
-  icon: 'fa-tag'
-  title: 'Category'
-  submenu: null
+catalog:
+  title: Catalog
+  icon: 'fa-tags'
+  route: null
+  submenu:
+    category:
+      route: 'app.admin.category.list'
+      title: 'Categories'
+      submenu: null
+    product:
+      route: 'app.admin.product.list'
+      title: 'Products'
+      submenu: null

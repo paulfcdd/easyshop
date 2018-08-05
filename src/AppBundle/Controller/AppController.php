@@ -75,6 +75,35 @@ class AppController extends Controller
     }
 
     /**
+     * @param $categories
+     * @param array|null $categoriesTree
+     *
+     * @return array|null
+     */
+    public function renderNestedTree($categories, ?array $categoriesTree)
+    {
+        /** @var \AppBundle\Entity\Category $category */
+        foreach ($categories as $category) {
+            if ($category->getParent()) {
+                if (array_key_exists($category->getParent()->getId(), $categoriesTree)) {
+                    $parent = $category->getParent();
+                    $categoriesTree[$parent->getId()]['children'][$category->getId()]['parent'] = $category->getName();
+                    $categoriesTree[$parent->getId()]['children'][$category->getId()]['children'] = [];
+                }
+            }
+        }
+
+        foreach ($categoriesTree as $key => $treeItem) {
+            if (!empty($treeItem['children'])) {
+                $children = $this->renderNestedTree($categories, $treeItem['children']);
+                $categoriesTree[$key]['children'] = $children;
+            }
+        }
+
+        return $categoriesTree;
+    }
+
+    /**
      * @param string $formType
      * @param \Symfony\Component\HttpFoundation\Request|null $request
      * @param mixed $data

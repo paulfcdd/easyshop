@@ -3,9 +3,7 @@
 namespace AppBundle\Twig;
 
 use AppBundle\Controller\AppController;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Asset\Context\ContextInterface;
-use Symfony\Component\DependencyInjection\Container;
+use AppBundle\Entity as Entity;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Extension\AbstractExtension;
@@ -33,8 +31,7 @@ class AppExtension extends AbstractExtension
     public function __construct(
         AppController $app,
         ContainerInterface $container
-    )
-    {
+    ) {
         $this->app = $app;
         $this->container = $container;
     }
@@ -44,6 +41,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('get_asset', [$this, 'getAsset']),
             new TwigFunction('render_menu', [$this, 'renderMenu']),
+            new TwigFunction('render_category_chain_with_separator', [$this, 'renderCategoryChainWithSeparator']),
         ];
     }
 
@@ -76,5 +74,10 @@ class AppExtension extends AbstractExtension
         $data = Yaml::parseFile($menu);
 
         return $data;
+    }
+
+    public function renderCategoryChainWithSeparator(Entity\Category $category, string $separator)
+    {
+        return $category->getName();
     }
 }

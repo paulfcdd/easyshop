@@ -14,7 +14,6 @@ class FrontController extends AppController
      */
     public function indexAction()
     {
-
         return $this->renderFront('layout/index', [
             'menu' => $this->renderMenu(),
         ]);
@@ -45,35 +44,5 @@ class FrontController extends AppController
         $tree = $this->renderNestedTree($categories, $categoriesTree);
 
         return $tree;
-
-    }
-
-    /**
-     * @param array $categories
-     * @param array $categoriesTree
-     *
-     * @return array
-     */
-    private function renderNestedTree(array $categories, array $categoriesTree)
-    {
-        /** @var Category $category */
-        foreach ($categories as $category) {
-            if ($category->getParent()) {
-                if (array_key_exists($category->getParent()->getId(), $categoriesTree)) {
-                    $parent = $category->getParent();
-                    $categoriesTree[$parent->getId()]['children'][$category->getId()]['parent'] = $category->getName();
-                    $categoriesTree[$parent->getId()]['children'][$category->getId()]['children'] = [];
-                }
-            }
-        }
-
-        foreach ($categoriesTree as $key => $treeItem) {
-            if (!empty($treeItem['children'])) {
-                $children = $this->renderNestedTree($categories, $treeItem['children']);
-                $categoriesTree[$key]['children'] = $children;
-            }
-        }
-
-        return $categoriesTree;
     }
 }
