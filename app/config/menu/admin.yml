@@ -17,3 +17,7 @@ catalog:
       route: 'app.admin.product.list'
       title: 'Products'
       submenu: null
+    manufacturer:
+      route: 'app.admin.manufacturer.list'
+      title: 'Manufacturers'
+      submenu: null

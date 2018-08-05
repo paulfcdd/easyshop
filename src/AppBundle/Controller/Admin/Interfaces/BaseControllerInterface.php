@@ -27,5 +27,12 @@ interface BaseControllerInterface
      * @param mixed | null $object
      * @return mixed
      */
-    public function handleFormAction(Request $request, $object = null);
+    public function handleFormAction(Request $request, $object);
+
+    /**
+     * @param string $objectId
+     *
+     * @return mixed
+     */
+    public function deleteAction(string $objectId);
 }

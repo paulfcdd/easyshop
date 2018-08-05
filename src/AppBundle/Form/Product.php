@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Form\Type\CategorySelectorType;
 use AppBundle\Form\Type\MetaTagType;
 use AppBundle\Form\Type\SelectorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -31,6 +32,12 @@ class Product extends AbstractType
             ])
             ->add('category', CategorySelectorType::class, [
                 'placeholder' => 'Select category',
+            ])
+            ->add('manufacturer', EntityType::class, [
+                'class' => Entity\Manufacturer::class,
+                'choice_label' => 'name',
+                'expanded' => false,
+                'multiple' => false
             ])
             ->add('metaTitle', MetaTagType::class, [])
             ->add('metaKeywords', MetaTagType::class, [])

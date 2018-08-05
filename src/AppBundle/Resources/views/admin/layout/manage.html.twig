@@ -1,0 +1,44 @@
+{% extends '@App/admin/base.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content_header %}
+    <h1>
+        {% block manage_title %}{% endblock %}
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            {% block manage_content %}{% endblock %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}

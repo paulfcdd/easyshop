@@ -59,8 +59,11 @@ class Product
      */
     private $price;
 
-    /*Related to Manufacturer entity*/
-//    private $manufacturer;
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Manufacturer", inversedBy="products")
+     * @ORM\JoinColumn(name="manufacturer_id", referencedColumnName="id")
+     */
+    private $manufacturer;
 
     /**
      * @var integer
@@ -86,7 +89,7 @@ class Product
      */
     private $category;
 
-    /*OneToMany to Attribute entity*/
+    /*ManyToMany to Attribute entity*/
 //    private $attributes;
 
     /**
@@ -248,6 +251,25 @@ class Product
         $this->category = $category;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * @param mixed $manufacturer
+     * @return Product
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+        return $this;
+    }
+
 
 //    /**
 //     * @param \AppBundle\Entity\Tag $tag

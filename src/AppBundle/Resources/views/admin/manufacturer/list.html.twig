@@ -1,10 +1,12 @@
 {% extends '@App/admin/layout/list.html.twig' %}
 
-{% block list_title %}Product list{% endblock %}
+{% block list_title %}
+    Manufacturers list
+{% endblock %}
 
 {% block list_content %}
     <div class="box-header">
-        <a href="{{ path('app.admin.product.add') }}" role="button" class="btn btn-success">Add product</a>
+        <a href="{{ path('app.admin.manufacturer.add') }}" role="button" class="btn btn-success">Add manufacturer</a>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
@@ -13,34 +15,22 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Model</th>
-                <th>Price</th>
-                <th>Enable</th>
-                <th>Quantity</th>
-                <th>Category</th>
-                <th>Manufacturer</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for product in products %}
+            {% for manufacturer in manufacturers %}
                 <tr>
-                    <td>{{ product.id }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.model }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.status }}</td>
-                    <td>{{ product.quantity }}</td>
-                    <td>{{ product.category.name }}</td>
-                    <td>{{ product.manufacturer.name }}</td>
+                    <td>{{ manufacturer.id }}</td>
+                    <td>{{ manufacturer.name }}</td>
                     <td>
                         <div class="btn-group">
-                            <a href="{{ path('app.admin.product.edit', {'object': product.id}) }}"
+                            <a href="{{ path('app.admin.product.edit', {'object': manufacturer.id}) }}"
                                type="button" class="btn btn-success">
                                 <span class="fa fa-edit"></span>
                                 Edit
                             </a>
-                            <a href="{{ path('app.admin.product.delete', {'objectId': product.id}) }}"
+                            <a href="{{ path('app.admin.manufacturer.delete', {'objectId': manufacturer.id}) }}"
                                type="button" class="btn btn-danger js-confirm-delete">
                                 <span class="fa fa-trash"></span>
                                 Delete
@@ -52,5 +42,4 @@
             </tbody>
         </table>
     </div>
-    <!-- /.box-body -->
 {% endblock %}

@@ -29,9 +29,13 @@ class ProductController extends AbstractController
      */
     public function renderAddNewFormAction()
     {
+        $options = [
+            'action' => $this->generateUrl('app.admin.product.handle_form')
+        ];
+
         $form = $this->getForm(
             Form\Product::class,
-            ['action' => $this->generateUrl('app.admin.product.handle_form')]
+            $options
         );
 
         return $this->render('@App/admin/product/manage.html.twig', [
@@ -66,21 +70,24 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/admin/product/handle-form/{product}", name="app.admin.product.handle_form", defaults={"product"=null})
+     * @Route("/admin/product/handle-form/{object}", name="app.admin.product.handle_form", defaults={"object"=null})
      * @Method("POST")
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param null $object
+     * @param mixed $object
      *
      * @return mixed|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function handleFormAction(Request $request, $object = null)
+    public function handleFormAction(Request $request, $object)
     {
-        $form = $this->getForm(Form\Product::class, [], $request, $object);
+        /** @var \AppBundle\Entity\Product $product */
+        $product = $this->checkObject($object, Entity\Product::class);
+
+        $form = $this->getForm(Form\Product::class, [], $request, $product);
 
         if ($form->isValid()) {
             $formData = $form->getData();
 
-            if (!$object) {
+            if (!$product->getId()) {
                 $this->entityManager->persist($formData);
             }
 
@@ -88,12 +95,29 @@ class ProductController extends AbstractController
                 $this->entityManager->flush();
                 $this->flashSuccess('Saved');
                 return $this->redirectToRoute('app.admin.product.edit', [
-                    'id' => $formData->getId()
+                    'object' => $formData->getId()
                 ]);
             } catch (\Exception $exception) {
                 $this->flashError($exception->getMessage());
                 return $this->redirectToRoute('app.admin.product.add');
             }
-       }
+        }
+    }
+
+    /**
+     * @Route("/admin/product/delete/{objectId}", name="app.admin.product.delete")
+     *
+     * @param string $objectId
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(string $objectId)
+    {
+        return $this->deleteObject(
+            $objectId,
+            Entity\Product::class,
+            'app.admin.product.list',
+            'Product removed'
+        );
     }
 }
