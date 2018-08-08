@@ -14,20 +14,45 @@ class FrontController extends AppController
      */
     public function indexAction()
     {
-        return $this->renderFront('layout/index', [
-            'menu' => $this->renderMenu(),
-        ]);
-    }
-
-    public function productsListAction()
-    {
-
+        return $this->renderFront('layout/index', []);
     }
 
     /**
-     * @return array
+     * @Route("/products/list/{category}", name="app.front.product.list")
+     *
+     * @param Category $category
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function renderMenu()
+    public function productsListAction(Category $category)
+    {
+        /** @var array $products */
+        $products = $this->entityManager
+            ->getRepository(Category::class)
+            ->getCategoryProducts($category->getId(), $category->getName());
+
+        dump($products);
+
+        return $this->renderFront('layout/product_list', [
+            'products' => $products,
+            'categories' => $this->getCategoriesTree(),
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function renderMenuAction()
+    {
+        return $this->render('@App/template/default/partials/_menu.html.twig', [
+            'menu' => $this->getCategoriesTree()
+        ]);
+    }
+
+    /**
+     * @return array|null
+     */
+    private function getCategoriesTree()
     {
         $categories = $this->getDoctrine()
             ->getRepository(Category::class)
@@ -38,9 +63,11 @@ class FrontController extends AppController
         foreach ($categories as $category) {
             if (!$category->getParent()) {
                 $categoriesTree[$category->getId()]['parent'] = $category->getName();
+                $categoriesTree[$category->getId()]['id'] = $category->getId();
                 $categoriesTree[$category->getId()]['children'] = [];
             }
         }
+
         $tree = $this->renderNestedTree($categories, $categoriesTree);
 
         return $tree;

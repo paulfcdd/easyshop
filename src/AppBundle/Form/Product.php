@@ -42,6 +42,9 @@ class Product extends AbstractType
             ->add('metaTitle', MetaTagType::class, [])
             ->add('metaKeywords', MetaTagType::class, [])
             ->add('metaDescription', MetaTagType::class, [])
+            ->add('featured', SelectorType::class, [
+                'choices' => array_flip(Entity\Product::FEATURED)
+            ])
             ->add('save', SubmitType::class, []);
     }
 

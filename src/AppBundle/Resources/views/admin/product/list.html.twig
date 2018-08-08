@@ -19,6 +19,7 @@
                 <th>Quantity</th>
                 <th>Category</th>
                 <th>Manufacturer</th>
+                <th>Featured</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -33,6 +34,7 @@
                     <td>{{ product.quantity }}</td>
                     <td>{{ product.category.name }}</td>
                     <td>{{ product.manufacturer.name }}</td>
+                    <td>{{ product.featured }}</td>
                     <td>
                         <div class="btn-group">
                             <a href="{{ path('app.admin.product.edit', {'object': product.id}) }}"

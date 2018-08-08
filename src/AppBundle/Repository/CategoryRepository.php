@@ -21,4 +21,33 @@ class CategoryRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    /**
+     * @param int $categoryId
+     * @param string $categoryName
+     *
+     * @return array
+     */
+    public function getCategoryProducts(int $categoryId, string $categoryName)
+    {
+        $products = [];
+        $criteria = [
+            'id' => $categoryId,
+            'name' => $categoryName
+        ];
+
+        /** @var \AppBundle\Entity\Category $category */
+        $category = $this->findOneBy($criteria);
+
+        if (empty($category->getChildren()->toArray())) {
+            $products = $category->getProducts()->toArray();
+        } else {
+            /** @var \AppBundle\Entity\Category $child */
+            foreach ($category->getChildren() as $child) {
+                $products = array_merge($products,$child->getProducts()->toArray());
+            }
+        }
+
+        return $products;
+    }
 }

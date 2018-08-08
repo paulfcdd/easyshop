@@ -4,6 +4,7 @@ namespace AppBundle\Twig;
 
 use AppBundle\Controller\AppController;
 use AppBundle\Entity as Entity;
+use AppBundle\Repository\ProductRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Extension\AbstractExtension;
@@ -41,7 +42,8 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('get_asset', [$this, 'getAsset']),
             new TwigFunction('render_menu', [$this, 'renderMenu']),
-            new TwigFunction('render_category_chain_with_separator', [$this, 'renderCategoryChainWithSeparator']),
+            new TwigFunction('count_category_products', [$this, 'countCategoryProducts']),
+            new TwigFunction('get_featured_products', [$this, 'getFeaturedProducts']),
         ];
     }
 
@@ -76,8 +78,33 @@ class AppExtension extends AbstractExtension
         return $data;
     }
 
-    public function renderCategoryChainWithSeparator(Entity\Category $category, string $separator)
+    /**
+     * @param int $categoryId
+     * @param string $categoryName
+     *
+     * @return int
+     */
+    public function countCategoryProducts(int $categoryId, string $categoryName)
     {
-        return $category->getName();
+        $categoryProducts = $this->app->entityManager
+            ->getRepository(Entity\Category::class)
+            ->getCategoryProducts($categoryId, $categoryName);
+
+        $countedProducts = count($categoryProducts);
+
+        return $countedProducts;
+    }
+
+    /**
+     * @param int $limit
+     * @param string $order
+     *
+     * @return mixed
+     */
+    public function getFeaturedProducts(int $limit, string $order)
+    {
+        return $this->app->entityManager
+            ->getRepository(Entity\Product::class)
+            ->getFeaturedProducts($limit, $order);
     }
 }

@@ -753,11 +753,12 @@ p.est{
 .rating-left img {
     margin: .3em 0.1em 0;
 }
-.new-collections-grid1:nth-child(2){
-	margin:1em 0 0;
-}
+/*.new-collections-grid1:nth-child(2){*/
+	/*margin:1em 0 0;*/
+/*}*/
 .new-collections-grid1{
     position: relative;
+    border: 5px solid #F7F7F9;
 }
 .new-collections-grid1:before {
     content: "";
@@ -1176,7 +1177,7 @@ select#country,select#country1 {
 }
 .products-right-grids-bottom {
     background: #F7F7F9;
-	padding:1em 0 1em 1em;
+	padding:1em;
 }
 .products-right-grid1{
 	text-align:center;
@@ -1225,9 +1226,9 @@ select#country,select#country1 {
 .products-right-grids-bottom-grid {
     padding-left: 0;
 }
-.products-right-grid1:nth-child(2) {
-    margin: 1em 0 !important;
-}
+/*.products-right-grid1:nth-child(2) {*/
+    /*margin: 1em 0 !important;*/
+/*}*/
 .numbering{
 	text-align:right;
 }

@@ -88,6 +88,7 @@ class AppController extends Controller
                 if (array_key_exists($category->getParent()->getId(), $categoriesTree)) {
                     $parent = $category->getParent();
                     $categoriesTree[$parent->getId()]['children'][$category->getId()]['parent'] = $category->getName();
+                    $categoriesTree[$parent->getId()]['children'][$category->getId()]['id'] = $category->getId();
                     $categoriesTree[$parent->getId()]['children'][$category->getId()]['children'] = [];
                 }
             }

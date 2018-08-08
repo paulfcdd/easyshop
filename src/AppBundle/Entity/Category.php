@@ -38,6 +38,11 @@ class Category
     private $parent;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Category", mappedBy="parent")
+     */
+    private $children;
+
+    /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
      */
@@ -60,6 +65,7 @@ class Category
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -174,5 +180,40 @@ class Category
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return $this
+     */
+    public function addChild(Category $category)
+    {
+        if (!$this->children->contains($category)) {
+            $this->children->add($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Category $category
+     * @return $this
+     */
+    public function removeChild(Category $category)
+    {
+        if ($this->children->contains($category)) {
+            $this->children->remove($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

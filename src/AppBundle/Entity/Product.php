@@ -21,6 +21,11 @@ class Product
         0 => 'Disabled'
     ];
 
+    public const FEATURED = [
+        1 => 'Yes',
+        0 => 'No'
+    ];
+
     public const MINIMUM_QUANTITY = 1;
 
     /**
@@ -88,6 +93,12 @@ class Product
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
+
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $featured;
 
     /*ManyToMany to Attribute entity*/
 //    private $attributes;
@@ -267,6 +278,24 @@ class Product
     public function setManufacturer($manufacturer)
     {
         $this->manufacturer = $manufacturer;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFeatured(): bool
+    {
+        return $this->featured;
+    }
+
+    /**
+     * @param bool $featured
+     * @return Product
+     */
+    public function setFeatured(bool $featured): Product
+    {
+        $this->featured = $featured;
         return $this;
     }
 
