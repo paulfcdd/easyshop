@@ -1,0 +1,15 @@
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+            <li>
+                <a href="{{ path('app.front.index') }}">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    Home
+                </a>
+            </li>
+            {% for breadcrumb in breadcrumbs %}
+                <li class="active">{{ breadcrumb }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>

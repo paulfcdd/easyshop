@@ -4,7 +4,6 @@ namespace AppBundle\Twig;
 
 use AppBundle\Controller\AppController;
 use AppBundle\Entity as Entity;
-use AppBundle\Repository\ProductRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Extension\AbstractExtension;
@@ -44,6 +43,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('render_menu', [$this, 'renderMenu']),
             new TwigFunction('count_category_products', [$this, 'countCategoryProducts']),
             new TwigFunction('get_featured_products', [$this, 'getFeaturedProducts']),
+            new TwigFunction('get_breadcrumbs', [$this, 'getBreadcrumbs']),
         ];
     }
 
@@ -106,5 +106,16 @@ class AppExtension extends AbstractExtension
         return $this->app->entityManager
             ->getRepository(Entity\Product::class)
             ->getFeaturedProducts($limit, $order);
+    }
+
+    /**
+     * @param \AppBundle\Entity\Category $category
+     * @param \AppBundle\Entity\Product|null $product
+     *
+     * @return array
+     */
+    public function getBreadcrumbs(Entity\Category $category, Entity\Product $product = null)
+    {
+        return $this->app->renderBreadcrumbsChain($category, $product);
     }
 }

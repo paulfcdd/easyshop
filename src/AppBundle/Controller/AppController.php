@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
+use AppBundle\Entity\Product;
 use AppBundle\Entity\Template;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -102,6 +104,34 @@ class AppController extends Controller
         }
 
         return $categoriesTree;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Category $category
+     * @param \AppBundle\Entity\Product|null $product
+     *
+     * @return array
+     */
+    public function renderBreadcrumbsChain(Category $category, Product $product = null)
+    {
+        if ($category->getParent()) {
+            $breadcrumbs = [];
+
+            /** @var Category $parent */
+            $parent = $category->getParent();
+            $breadcrumbs[] = $parent->getName();
+
+            $this->renderBreadcrumbsChain($parent, $product);
+        }
+
+        $breadcrumbs[] = $category->getName();
+
+        if ($product)
+        {
+            $breadcrumbs[] = $product->getName();
+        }
+
+        return $breadcrumbs;
     }
 
     /**

@@ -1,16 +1,12 @@
 {% extends '@App/template/default/base.html.twig' %}
 
+{% block breadcrumbs %}
+    {% include '@App/template/default/partials/_breadcrumbs.html.twig' with {
+        'breadcrumbs': get_breadcrumbs(category)
+    }%}
+{% endblock %}
+
 {% block content %}
-
-    <div class="breadcrumbs">
-        <div class="container">
-            <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-                <li><a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
-                <li class="active">Products</li>
-            </ol>
-        </div>
-    </div>
-
     <div class="products">
         <div class="container">
             <div class="col-md-4 products-left">
@@ -154,7 +150,9 @@
                                 <a href="single.html" class="product-image">
                                     <img src="images/19.jpg" alt=" " class="img-responsive"></a>
                                 <div class="new-collections-grid1-image-pos products-right-grids-pos">
-                                    <a href="single.html">Quick View</a>
+                                    <a href="{{ path('app.front.single_product', {
+                                        'product': product.id
+                                    }) }}">Quick View</a>
                                 </div>
                                 <div class="new-collections-grid1-right products-right-grids-pos-right">
                                     <div class="rating">
@@ -177,7 +175,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <h4><a href="single.html">{{ product.name }}</a></h4>
+                            <h4><a href="{{ path('app.front.single_product', {
+                                    'product': product.id
+                                }) }}">{{ product.name }}</a></h4>
                             <p>Vel illum qui dolorem.</p>
                             <div class="simpleCart_shelfItem products-right-grid1-add-cart">
                                 <p>

@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\AppController;
 use AppBundle\Entity\Category;
-use AppBundle\Repository\CategoryRepository;
+use AppBundle\Entity\Product;
+use AppBundle\Controller\AppController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends AppController
@@ -31,11 +31,26 @@ class FrontController extends AppController
             ->getRepository(Category::class)
             ->getCategoryProducts($category->getId(), $category->getName());
 
-        dump($products);
-
         return $this->renderFront('layout/product_list', [
             'products' => $products,
+            'category' => $category,
             'categories' => $this->getCategoriesTree(),
+        ]);
+    }
+
+    /**
+     * @Route("/product/{product}", name="app.front.single_product")
+     * @param \AppBundle\Entity\Product $product
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function singleProductAction(Product $product)
+    {
+        /** @var Category $category */
+        $category = $product->getCategory();
+
+        return $this->renderFront('layout/single_product', [
+            'product' => $product
         ]);
     }
 
