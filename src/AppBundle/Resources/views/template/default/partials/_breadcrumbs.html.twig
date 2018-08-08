@@ -7,8 +7,19 @@
                     Home
                 </a>
             </li>
+            {% set lastBreadcrumb = breadcrumbs | last %}
             {% for breadcrumb in breadcrumbs %}
-                <li class="active">{{ breadcrumb }}</li>
+                <li {% if breadcrumb.name == lastBreadcrumb.name %}class="active"{% endif %}>
+                    {% if breadcrumb.name != lastBreadcrumb.name and breadcrumb.id is defined %}
+                        <a href="{{ path('app.front.product.list', {
+                            'category': breadcrumb.id
+                        }) }}">
+                            {{ breadcrumb.name }}
+                        </a>
+                        {% else %}
+                            {{ breadcrumb.name }}
+                    {% endif %}
+                </li>
             {% endfor %}
         </ol>
     </div>

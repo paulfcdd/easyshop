@@ -284,7 +284,7 @@ class Product
     /**
      * @return bool
      */
-    public function isFeatured(): bool
+    public function isFeatured(): ?bool
     {
         return $this->featured;
     }

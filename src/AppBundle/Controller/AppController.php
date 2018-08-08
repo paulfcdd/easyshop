@@ -114,21 +114,24 @@ class AppController extends Controller
      */
     public function renderBreadcrumbsChain(Category $category, Product $product = null)
     {
+        $i = 0;
+
         if ($category->getParent()) {
             $breadcrumbs = [];
-
             /** @var Category $parent */
             $parent = $category->getParent();
-            $breadcrumbs[] = $parent->getName();
-
+            $breadcrumbs[$i]['name'] = $parent->getName();
+            $breadcrumbs[$i]['id'] = $parent->getId();
             $this->renderBreadcrumbsChain($parent, $product);
+            $i++;
         }
 
-        $breadcrumbs[] = $category->getName();
+        $breadcrumbs[$i]['name'] = $category->getName();
+        $breadcrumbs[$i]['id'] = $category->getId();
 
         if ($product)
         {
-            $breadcrumbs[] = $product->getName();
+            $breadcrumbs[]['name'] = $product->getName();
         }
 
         return $breadcrumbs;
