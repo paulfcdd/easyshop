@@ -1,5 +1,10 @@
 {% extends '@App/template/default/base.html.twig' %}
 
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('template/default/css/flexslider.css') }}" type="text/css" media="screen"/>
+{% endblock %}
+
 {% block breadcrumbs %}
     {% include '@App/template/default/partials/_breadcrumbs.html.twig' with {
         'breadcrumbs': get_breadcrumbs(product.category, product)
@@ -22,33 +27,23 @@
                 <div class="col-md-5 single-right-left animated wow slideInUp" data-wow-delay=".5s">
                     <div class="flexslider">
                         <ul class="slides">
-                            <li data-thumb="images/si.jpg">
-                                <div class="thumb-image"><img src="images/si.jpg" data-imagezoom="true"
+                            <li data-thumb="{{ asset('template/default/images/si.jpg') }}">
+                                <div class="thumb-image"><img src="{{ asset('template/default/images/si.jpg') }}"
+                                                              data-imagezoom="true"
                                                               class="img-responsive"></div>
                             </li>
-                            <li data-thumb="images/si1.jpg">
-                                <div class="thumb-image"><img src="images/si1.jpg" data-imagezoom="true"
+                            <li data-thumb="{{ asset('template/default/images/si1.jpg') }}">
+                                <div class="thumb-image"><img src="{{ asset('template/default/images/si1.jpg') }}"
+                                                              data-imagezoom="true"
                                                               class="img-responsive"></div>
                             </li>
-                            <li data-thumb="images/si2.jpg">
-                                <div class="thumb-image"><img src="images/si2.jpg" data-imagezoom="true"
+                            <li data-thumb="{{ asset('template/default/images/si2.jpg') }}">
+                                <div class="thumb-image"><img src="{{ asset('template/default/images/si2.jpg') }}"
+                                                              data-imagezoom="true"
                                                               class="img-responsive"></div>
                             </li>
                         </ul>
                     </div>
-                    <!-- flixslider -->
-                    <script defer src="js/jquery.flexslider.js"></script>
-                    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
-                    <script>
-                        // Can also be used with $(document).ready()
-                        $(window).load(function () {
-                            $('.flexslider').flexslider({
-                                animation: "slide",
-                                controlNav: "thumbnails"
-                            });
-                        });
-                    </script>
-                    <!-- flixslider -->
                 </div>
                 <div class="col-md-7 single-right-left simpleCart_shelfItem animated wow slideInRight"
                      data-wow-delay=".5s">
@@ -143,7 +138,6 @@
                                     </a>
                                 </li>
                             {% endif %}
-
 
                             <li role="presentation">
                                 <a href="#review" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">
@@ -408,4 +402,20 @@
         </div>
     </div>
     <!-- //single-related-products -->
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<!-- flixslider -->
+                    <script src="{{ asset('template/default/js/flexslider.js') }}"></script>
+                    <script>
+                        // Can also be used with $(document).ready()
+                        $(document).ready(function () {
+                            $('.flexslider').flexslider({
+                                animation: "slide",
+                                controlNav: "thumbnails"
+                            });
+                        });
+                    </script>
+                    <!-- flixslider -->
 {% endblock %}
