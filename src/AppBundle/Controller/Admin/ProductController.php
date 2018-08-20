@@ -70,8 +70,11 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/admin/product/handle-form/{object}", name="app.admin.product.handle_form", defaults={"object"=null})
+     * @Route("/admin/product/handle-form/{object}",
+     *     name="app.admin.product.handle_form",
+     *     defaults={"object"=null})
      * @Method("POST")
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param mixed $object
      *
@@ -85,7 +88,13 @@ class ProductController extends AbstractController
         $form = $this->getForm(Form\Product::class, [], $request, $product);
 
         if ($form->isValid()) {
+            /** @var \AppBundle\Entity\Product $formData */
             $formData = $form->getData();
+
+            /** @var \AppBundle\Entity\ProductSpecification $specification */
+            foreach ($formData->getSpecifications() as $specification) {
+                $specification->setProduct($product);
+            }
 
             if (!$product->getId()) {
                 $this->entityManager->persist($formData);

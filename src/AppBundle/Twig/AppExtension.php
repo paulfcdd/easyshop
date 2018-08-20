@@ -4,6 +4,7 @@ namespace AppBundle\Twig;
 
 use AppBundle\Controller\AppController;
 use AppBundle\Entity as Entity;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Extension\AbstractExtension;
@@ -44,6 +45,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('count_category_products', [$this, 'countCategoryProducts']),
             new TwigFunction('get_featured_products', [$this, 'getFeaturedProducts']),
             new TwigFunction('get_breadcrumbs', [$this, 'getBreadcrumbs']),
+            new TwigFunction('sort_specifications_by_group', [$this, 'sortSpecificationsByGroup']),
         ];
     }
 
@@ -117,5 +119,33 @@ class AppExtension extends AbstractExtension
     public function getBreadcrumbs(Entity\Category $category, Entity\Product $product = null)
     {
         return $this->app->renderBreadcrumbsChain($category, $product);
+    }
+
+    /**
+     * @param \Doctrine\ORM\PersistentCollection $specifications
+     *
+     * @return array
+     */
+    public function sortSpecificationsByGroup(PersistentCollection $specifications)
+    {
+        $sortedSpecifications = [];
+
+        /** @var \AppBundle\Entity\ProductSpecification $specification */
+        foreach ($specifications as $specification)
+        {
+            /** @var \AppBundle\Entity\SpecificationGroup $specificationGroup */
+            $specificationGroup = $specification->getSpecification()->getSpecificationGroup();
+            /** @var int $specificationGroupId */
+            $specificationGroupId = $specificationGroup->getId();
+
+            if (!array_key_exists($specificationGroupId, $sortedSpecifications)) {
+                $sortedSpecifications[$specificationGroupId]['name'] = $specificationGroup->getName();
+                $sortedSpecifications[$specificationGroupId]['specifications'] = [];
+            }
+
+            $sortedSpecifications[$specificationGroupId]['specifications'][] =  $specification;
+        }
+
+        return $sortedSpecifications;
     }
 }

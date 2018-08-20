@@ -20,6 +20,11 @@
                     SEO
                 </a>
             </li>
+            <li class="">
+                <a href="#tab_specifications" data-toggle="tab" aria-expanded="false">
+                    Specifications
+                </a>
+            </li>
         </ul>
         <div class="box-body">
 
@@ -45,6 +50,9 @@
                     {{ form_row(form.metaKeywords) }}
                     {{ form_row(form.metaDescription) }}
                 </div>
+                <div class="tab-pane" id="tab_specifications">
+                    {{ form_row(form.specifications) }}
+                </div>
             </div>
             {{ form_end(form) }}
         </div>
@@ -60,5 +68,44 @@
             width: '100%',
             'background-color': '#00f'
         });
+
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addTagButton = $('<button type="button" class="add_tag_link">Add a tag</button>');
+        var $newLinkLi = $('<li></li>').append($addTagButton);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('div#product_specifications');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagButton.on('click', function(e) {
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+        });
+
+        function addTagForm(collectionHolder, newLinkLi) {
+            let prototype = collectionHolder.data('prototype');
+            let index = collectionHolder.data('index');
+            let newForm = prototype.replace(/__name__/g, index);
+            collectionHolder.data('index', index + 1);
+            let newFormRow = $('<li></li>').append(newForm);
+            newLinkLi.before(newFormRow);
+            // var prototype = $collectionHolder.data('prototype');
+            // var index = $collectionHolder.data('index');
+            // var newForm = prototype;
+            // newForm = newForm.replace(/__name__/g, index);
+            // $collectionHolder.data('index', index + 1);
+            // var $newFormLi = $('<li></li>').append(newForm);
+            // $newLinkLi.before($newFormLi);
+        }
     </script>
 {% endblock %}

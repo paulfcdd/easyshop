@@ -5,22 +5,23 @@ namespace AppBundle\Form\Type;
 
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SelectorType extends AbstractType
+class WysiwygEditorType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'expanded' => false,
-            'multiple' => false
+           'attr' => [
+               'class' => 'wysiwyg-editor'
+           ]
         ]);
     }
 
     public function getParent()
     {
-        return ChoiceType::class;
+        return TextareaType::class;
     }
+
 }

@@ -100,15 +100,24 @@ class Product
      */
     private $featured;
 
-    /*ManyToMany to Attribute entity*/
-//    private $attributes;
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductSpecification", mappedBy="product", cascade={"persist"})
+     */
+    private $specifications;
+
 
     /**
      * Product constructor.
      */
     public function __construct()
     {
+        $this->specifications = new ArrayCollection();
 //        $this->tags = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     /**
@@ -299,6 +308,41 @@ class Product
         return $this;
     }
 
+    /**
+     * @param \AppBundle\Entity\ProductSpecification $specification
+     * @return $this
+     */
+    public function addSpecification(ProductSpecification $specification)
+    {
+        if (!$this->specifications->contains($specification))
+        {
+            $this->specifications->add($specification);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param \AppBundle\Entity\ProductSpecification $specification
+     * @return $this
+     */
+    public function removeSpecification(ProductSpecification $specification)
+    {
+        if ($this->specifications->contains($specification))
+        {
+            $this->specifications->remove($specification);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getSpecifications()
+    {
+        return $this->specifications;
+    }
 
 //    /**
 //     * @param \AppBundle\Entity\Tag $tag

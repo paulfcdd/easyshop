@@ -41,4 +41,11 @@
 
 {% block js %}
     {{ parent() }}
+    <script src="{{ asset('node_modules/ckeditor/ckeditor.js') }}"></script>
+    <script>
+        $(function() {
+            const textareaId = $('textarea.wysiwyg-editor').attr('id');
+            CKEDITOR.replace( textareaId );
+        });
+    </script>
 {% endblock %}
