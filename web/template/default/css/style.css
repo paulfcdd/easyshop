@@ -1958,15 +1958,13 @@ label.radio {
 .add-review input[type="text"],.add-review input[type="email"],.add-review textarea{
 	outline:none;
 	padding:10px;
-	background:#f5f5f5;
+	/*background:#f5f5f5;*/
 	border:1px solid #D2D2D2;
-	width:48.6%;
+	/*width:48.6%;*/
 	font-size:14px;
 	color:#212121;
 }
-.add-review input[type="email"]{
-	margin-left:1em;
-}
+
 .add-review textarea{
 	width:100% !important;
 	min-height:150px;

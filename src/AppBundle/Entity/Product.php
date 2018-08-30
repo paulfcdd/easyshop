@@ -105,6 +105,10 @@ class Product
      */
     private $specifications;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Review", mappedBy="product")
+     */
+    private $reviews;
 
     /**
      * Product constructor.
@@ -112,6 +116,7 @@ class Product
     public function __construct()
     {
         $this->specifications = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
 //        $this->tags = new ArrayCollection();
     }
 
@@ -342,6 +347,39 @@ class Product
     public function getSpecifications()
     {
         return $this->specifications;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Review $review
+     * @return $this
+     */
+    public function addReview(Review $review)
+    {
+        if (!$this->reviews->contains($review))
+        {
+            $this->reviews->add($review);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Review $review
+     * @return $this
+     */
+    public function removeReview(Review $review)
+    {
+        if ($this->reviews->contains($review))
+        {
+            $this->reviews->remove($review);
+        }
+
+        return $this;
+    }
+
+    public function getReviews()
+    {
+        return $this->reviews;
     }
 
 //    /**

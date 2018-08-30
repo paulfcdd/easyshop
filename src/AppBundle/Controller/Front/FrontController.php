@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Front;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use AppBundle\Controller\AppController;
+use AppBundle\Form\ReviewType;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends AppController
@@ -46,11 +47,11 @@ class FrontController extends AppController
      */
     public function singleProductAction(Product $product)
     {
-        /** @var Category $category */
-        $category = $product->getCategory();
+        $reviewForm = $this->getForm(ReviewType::class, []);
 
         return $this->renderFront('layout/single_product', [
-            'product' => $product
+            'product' => $product,
+            'reviewForm' => $reviewForm->createView(),
         ]);
     }
 
