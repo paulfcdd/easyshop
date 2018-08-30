@@ -111,6 +111,13 @@ class Product
     private $reviews;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true, unique=true)
+     */
+    private $slug;
+
+    /**
      * Product constructor.
      */
     public function __construct()
@@ -377,44 +384,29 @@ class Product
         return $this;
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function getReviews()
     {
         return $this->reviews;
     }
 
-//    /**
-//     * @param \AppBundle\Entity\Tag $tag
-//     * @return $this
-//     */
-//    public function addTag(Tag $tag)
-//    {
-//        if (!$this->tags->contains($tag))
-//        {
-//            $this->tags->add($tag);
-//        }
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * @param \AppBundle\Entity\Tag $tag
-//     * @return $this
-//     */
-//    public function removeTag(Tag $tag)
-//    {
-//        if ($this->tags->contains($tag))
-//        {
-//            $this->tags->remove($tag);
-//        }
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * @return \Doctrine\Common\Collections\ArrayCollection
-//     */
-//    public function getTags()
-//    {
-//        return $this->tags;
-//    }
+    /**
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return Product
+     */
+    public function setSlug(string $slug): Product
+    {
+        $this->slug = $slug;
+        return $this;
+    }
 }

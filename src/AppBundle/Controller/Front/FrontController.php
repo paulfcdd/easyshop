@@ -40,14 +40,25 @@ class FrontController extends AppController
     }
 
     /**
-     * @Route("/product/{product}", name="app.front.single_product")
-     * @param \AppBundle\Entity\Product $product
+     * @Route("/product/{category}/{product}", name="app.front.single_product")
+     *
+     * @param string $category
+     * @param string $product
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function singleProductAction(Product $product)
+    public function singleProductAction(string $category, string $product)
     {
+        /** @var ReviewType $reviewForm */
         $reviewForm = $this->getForm(ReviewType::class, []);
+
+        if (intval($product) === 0) {
+            /** @var Product $product */
+            $product = $this->entityManager->getRepository(Product::class)->findOneBySlug($product);
+        } else {
+            /** @var Product $product */
+            $product = $this->entityManager->getRepository(Product::class)->findOneById($product);
+        }
 
         return $this->renderFront('layout/single_product', [
             'product' => $product,

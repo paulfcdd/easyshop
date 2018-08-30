@@ -46,6 +46,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_featured_products', [$this, 'getFeaturedProducts']),
             new TwigFunction('get_breadcrumbs', [$this, 'getBreadcrumbs']),
             new TwigFunction('sort_specifications_by_group', [$this, 'sortSpecificationsByGroup']),
+            new TwigFunction('get_product_slug', [$this, 'getProductSlug'])
         ];
     }
 
@@ -147,5 +148,18 @@ class AppExtension extends AbstractExtension
         }
 
         return $sortedSpecifications;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Product $product
+     * @return mixed|null|string
+     */
+    public function getProductSlug(Entity\Product $product)
+    {
+        if ($product->getSlug()) {
+            return $product->getSlug();
+        } else {
+            return $product->getId();
+        }
     }
 }

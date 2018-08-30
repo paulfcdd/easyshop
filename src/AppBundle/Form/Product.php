@@ -21,7 +21,17 @@ class Product extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'class' => 'translit-input'
+                ]
+            ])
+            ->add('slug', TextType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'translit-output'
+                ]
+            ])
             ->add('description', WysiwygEditorType::class, [])
             ->add('model', TextType::class)
             ->add('price', IntegerType::class)

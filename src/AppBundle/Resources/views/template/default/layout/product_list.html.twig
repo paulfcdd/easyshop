@@ -144,6 +144,7 @@
                 <div class="products-right-grids-bottom">
 
                     {% for product in products %}
+
                         <div class="new-collections-grid1 products-right-grid1 animated wow slideInUp col-md-6"
                              data-wow-delay=".5s">
                             <div class="new-collections-grid1-image">
@@ -151,7 +152,8 @@
                                     <img src="images/19.jpg" alt=" " class="img-responsive"></a>
                                 <div class="new-collections-grid1-image-pos products-right-grids-pos">
                                     <a href="{{ path('app.front.single_product', {
-                                        'product': product.id
+                                        'category': product.category.parent.name | lower,
+                                        'product': get_product_slug(product)
                                     }) }}">Quick View</a>
                                 </div>
                                 <div class="new-collections-grid1-right products-right-grids-pos-right">
@@ -176,7 +178,8 @@
                                 </div>
                             </div>
                             <h4><a href="{{ path('app.front.single_product', {
-                                    'product': product.id
+                                    'category': product.category.parent.name | lower,
+                                    'product': get_product_slug(product)
                                 }) }}">{{ product.name }}</a></h4>
                             <p>Vel illum qui dolorem.</p>
                             <div class="simpleCart_shelfItem products-right-grid1-add-cart">

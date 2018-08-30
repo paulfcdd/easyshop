@@ -2,6 +2,33 @@
 
 {% block manage_title %}Manage product{% endblock %}
 
+{% block preview_link %}
+    {% if product is defined %}
+    <strong>
+        <p>Permalink: <a href="{{ path('app.front.single_product', {
+                'category': product.category.name | lower,
+                'product': get_product_slug(product)
+            }) }}" target="_blank">{{ url('app.front.single_product', {
+                    'category': product.category.name | lower,
+                    'product': get_product_slug(product)
+                }) }}</a></p>
+    </strong>
+    {% endif %}
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('app.admin.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ path('app.admin.product.list') }}">Products</a></li>
+        {% if product is defined %}
+            <li class="active">{{ product.name }}</li>
+        {% else %}
+            <li class="active">New product</li>
+        {% endif %}
+    </ol>
+{% endblock %}
+
 {% block manage_content %}
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
@@ -32,6 +59,20 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_general">
                     {{ form_row(form.name) }}
+
+                    {{ form_label(form.slug) }}
+                    <div class="input-group">
+                        {{ form_widget(form.slug) }}
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary translit-generate"
+                                    data-toggle="tooltip" data-placement="top"
+                                    type="button"
+                                    title="Generate slug">
+                                <i class="fa fa-link"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     {{ form_row(form.description) }}
                     {{ form_row(form.price) }}
                     {{ form_row(form.model) }}
@@ -62,6 +103,8 @@
 
 {% block js %}
     {{ parent() }}
+    <script src="{{ asset('admin_files/js/translit.js') }}"></script>
+
     <script src="{{ asset('node_modules/select2/dist/js/select2.full.min.js') }}"></script>
     <script>
         $('.select-2-selector').select2({
@@ -75,7 +118,7 @@
         var $addTagButton = $('<button type="button" class="add_tag_link">Add a tag</button>');
         var $newLinkLi = $('<li></li>').append($addTagButton);
 
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
             // Get the ul that holds the collection of tags
             $collectionHolder = $('div#product_specifications');
 
@@ -86,7 +129,7 @@
             // index when inserting a new item (e.g. 2)
             $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-            $addTagButton.on('click', function(e) {
+            $addTagButton.on('click', function (e) {
                 // add a new tag form (see next code block)
                 addTagForm($collectionHolder, $newLinkLi);
             });

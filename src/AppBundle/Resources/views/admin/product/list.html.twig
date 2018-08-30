@@ -13,6 +13,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Slug</th>
                 <th>Model</th>
                 <th>Price</th>
                 <th>Enable</th>
@@ -28,6 +29,7 @@
                 <tr>
                     <td>{{ product.id }}</td>
                     <td>{{ product.name }}</td>
+                    <td>{% if product.slug %}/{{ product.slug }}{% endif %}</td>
                     <td>{{ product.model }}</td>
                     <td>{{ product.price }}</td>
                     <td>{{ product.status }}</td>
