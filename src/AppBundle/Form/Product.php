@@ -58,13 +58,14 @@ class Product extends AbstractType
             ->add('specifications', CollectionType::class, [
                 'entry_type' => Type\ProductSpecificationType::class,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'entry_options' => [
                     'product' => $builder->getData(),
+                    'label' => false
                 ],
                 'attr' => [
                     'novalidate'
                 ],
-                'label' => false
             ])
             ->add('save', SubmitType::class, []);
     }

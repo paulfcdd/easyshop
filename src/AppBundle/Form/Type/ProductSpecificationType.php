@@ -26,12 +26,18 @@ class ProductSpecificationType extends AbstractType
                 'required' => false,
             ])
             ->add('specification', EntityType::class, [
+                'label' => false,
                 'class' => Specification::class,
                 'choice_label' => 'name',
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
+                'group_by' => function($choiceValue, $key, $value) {
+                    return $choiceValue->getSpecificationGroup()->getName();
+                }
             ])
-            ->add('description', TextareaType::class);
+            ->add('description', TextareaType::class,[
+                'label' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

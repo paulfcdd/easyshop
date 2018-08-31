@@ -4,15 +4,15 @@
 
 {% block preview_link %}
     {% if product is defined %}
-    <strong>
-        <p>Permalink: <a href="{{ path('app.front.single_product', {
-                'category': product.category.name | lower,
-                'product': get_product_slug(product)
-            }) }}" target="_blank">{{ url('app.front.single_product', {
+        <strong>
+            <p>Permalink: <a href="{{ path('app.front.single_product', {
                     'category': product.category.name | lower,
                     'product': get_product_slug(product)
-                }) }}</a></p>
-    </strong>
+                }) }}" target="_blank">{{ url('app.front.single_product', {
+                        'category': product.category.name | lower,
+                        'product': get_product_slug(product)
+                    }) }}</a></p>
+        </strong>
     {% endif %}
 {% endblock %}
 
@@ -58,41 +58,109 @@
             {{ form_start(form) }}
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_general">
-                    {{ form_row(form.name) }}
+                    <div class="col-md-6">
+                        {{ form_row(form.name) }}
+                    </div>
 
-                    {{ form_label(form.slug) }}
-                    <div class="input-group">
-                        {{ form_widget(form.slug) }}
-                        <div class="input-group-btn">
-                            <button class="btn btn-primary translit-generate"
-                                    data-toggle="tooltip" data-placement="top"
-                                    type="button"
-                                    title="Generate slug">
-                                <i class="fa fa-link"></i>
-                            </button>
+                    <div class="col-md-6">
+                        {{ form_label(form.slug) }}
+                        <div class="input-group">
+                            {{ form_widget(form.slug) }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary translit-generate"
+                                        data-toggle="tooltip" data-placement="top"
+                                        type="button"
+                                        title="Generate slug">
+                                    <i class="fa fa-link"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    {{ form_row(form.description) }}
-                    {{ form_row(form.price) }}
-                    {{ form_row(form.model) }}
-                    {{ form_row(form.status) }}
+                    <div class="col-md-12">
+                        {{ form_row(form.description) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_row(form.price) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_row(form.model) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_row(form.status) }}
+                    </div>
+
                 </div>
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="tab_data">
-                    {{ form_row(form.category) }}
-                    {{ form_row(form.manufacturer) }}
-                    {{ form_row(form.featured) }}
-                    {{ form_row(form.quantity) }}
-                    {{ form_row(form.minimumQuantity) }}
+
+                    <div class="col-md-6">{{ form_row(form.category) }}</div>
+                    <div class="col-md-6">{{ form_row(form.manufacturer) }}</div>
+                    <div class="col-md-6">{{ form_row(form.quantity) }}</div>
+                    <div class="col-md-6"> {{ form_row(form.minimumQuantity) }}</div>
+                    <div class="col-md-6"> {{ form_row(form.featured) }}</div>
+
                 </div>
                 <div class="tab-pane" id="tab_seo">
-                    {{ form_row(form.metaTitle) }}
-                    {{ form_row(form.metaKeywords) }}
-                    {{ form_row(form.metaDescription) }}
+
+                    <div class="col-md-6">{{ form_row(form.metaTitle) }}</div>
+                    <div class="col-md-6">{{ form_row(form.metaKeywords) }}</div>
+                    <div class="col-md-12">{{ form_row(form.metaDescription) }}</div>
+
                 </div>
                 <div class="tab-pane" id="tab_specifications">
-                    {{ form_row(form.specifications) }}
+
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover dataTable"
+                               data-widget-tags="{{ '<tr></tr>'|e }}">
+                            <thead>
+                            <tr>
+                                <th>Specification Group</th>
+                                <th>Specification</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="specification-table-body">
+                            {% for specificationField in form.specifications %}
+                                <tr id="object-id-{{ specificationField.specification.parent.vars.value.id }}">
+                                    <td class="text-center">
+                                        <strong>
+                                            {{ specificationField.specification.parent.vars.value.specification.specificationGroup.name }}
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {{ form_widget(specificationField.specification) }}
+                                    </td>
+                                    <td>
+                                        {{ form_widget(specificationField.description) }}
+                                    </td>
+                                    <td class="right-side">
+                                        <button type="button" class="btn btn-danger ajax-delete"
+                                                data-entity="product_specification"
+                                                data-objectId="{{ specificationField.specification.parent.vars.value.id }}"
+                                                data-confirmMessage="Are you sure you want to delete specification?"
+                                                data-deleteurl="{{ path('app.admin.api.delete_object') }}"
+                                        >
+                                            <span class="fa fa-times"></span>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {{ form_widget(form.specifications) }}
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+                    {{ form_widget(form.save) }}
                 </div>
             </div>
             {{ form_end(form) }}
@@ -115,8 +183,8 @@
         var $collectionHolder;
 
         // setup an "add a tag" link
-        var $addTagButton = $('<button type="button" class="add_tag_link">Add a tag</button>');
-        var $newLinkLi = $('<li></li>').append($addTagButton);
+        var $addTagButton = $('<button type="button" class="btn btn-primary new-row-button"><span class="fa fa-plus"></span>&nbsp;Add a tag</button>');
+        var $newLinkLi = $('<div></div>').append($addTagButton);
 
         jQuery(document).ready(function () {
             // Get the ul that holds the collection of tags
@@ -136,19 +204,23 @@
         });
 
         function addTagForm(collectionHolder, newLinkLi) {
+            console.log('test')
+
             let prototype = collectionHolder.data('prototype');
             let index = collectionHolder.data('index');
             let newForm = prototype.replace(/__name__/g, index);
+            let newFormRow = $('<div class="new-specification-div"></div>').append(newForm);
+            let deleteButton = $('<button type="button" class="btn btn-danger delete-new-row-btn">Delete</button>');
+
+            $(newFormRow).append(deleteButton);
             collectionHolder.data('index', index + 1);
-            let newFormRow = $('<li></li>').append(newForm);
             newLinkLi.before(newFormRow);
-            // var prototype = $collectionHolder.data('prototype');
-            // var index = $collectionHolder.data('index');
-            // var newForm = prototype;
-            // newForm = newForm.replace(/__name__/g, index);
-            // $collectionHolder.data('index', index + 1);
-            // var $newFormLi = $('<li></li>').append(newForm);
-            // $newLinkLi.before($newFormLi);
+
+            deleteButton.on('click', function (e) {
+                $(this).parent().remove();
+            })
         }
+
+
     </script>
 {% endblock %}
