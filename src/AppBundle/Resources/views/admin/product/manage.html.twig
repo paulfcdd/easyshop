@@ -152,9 +152,23 @@
                                 </tr>
                             {% endfor %}
                             </tbody>
+                            <tfoot>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>
+                                    <button type="button" class="btn btn-primary new-row-button">
+                                        <span class="fa fa-plus"></span>
+                                    </button>
+                                </th>
+                            </tr>
+                            </tfoot>
                         </table>
 
-                        {{ form_widget(form.specifications) }}
+                        <div class="widget-container">
+                            {{ form_widget(form.specifications) }}
+                        </div>
                     </div>
 
                 </div>
@@ -173,54 +187,41 @@
     {{ parent() }}
     <script src="{{ asset('admin_files/js/translit.js') }}"></script>
 
-    <script src="{{ asset('node_modules/select2/dist/js/select2.full.min.js') }}"></script>
+    {#<script src="{{ asset('node_modules/select2/dist/js/select2.full.min.js') }}"></script>#}
     <script>
-        $('.select-2-selector').select2({
-            width: '100%',
-            'background-color': '#00f'
-        });
+        // $('.select-2-selector').select2({
+        //     width: '100%',
+        //     'background-color': '#00f'
+        // });
 
-        var $collectionHolder;
-
-        // setup an "add a tag" link
-        var $addTagButton = $('<button type="button" class="btn btn-primary new-row-button"><span class="fa fa-plus"></span>&nbsp;Add a tag</button>');
-        var $newLinkLi = $('<div></div>').append($addTagButton);
+        // let $addTagButton = $('<button type="button" class="btn btn-primary new-row-button"><span class="fa fa-plus"></span>&nbsp;Add a tag</button>');
+        // let $newLinkLi = $('<div></div>').append($addTagButton);
 
         jQuery(document).ready(function () {
-            // Get the ul that holds the collection of tags
-            $collectionHolder = $('div#product_specifications');
-
-            // add the "add a tag" anchor and li to the tags ul
-            $collectionHolder.append($newLinkLi);
-
-            // count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item (e.g. 2)
+            let $collectionHolder =  $('div#product_specifications');
             $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-            $addTagButton.on('click', function (e) {
+            $('.new-row-button').on('click', function (e) {
                 // add a new tag form (see next code block)
-                addTagForm($collectionHolder, $newLinkLi);
+                addTagForm($collectionHolder);
             });
         });
 
-        function addTagForm(collectionHolder, newLinkLi) {
-            console.log('test')
+        function addTagForm(collectionHolder) {
 
             let prototype = collectionHolder.data('prototype');
             let index = collectionHolder.data('index');
             let newForm = prototype.replace(/__name__/g, index);
-            let newFormRow = $('<div class="new-specification-div"></div>').append(newForm);
-            let deleteButton = $('<button type="button" class="btn btn-danger delete-new-row-btn">Delete</button>');
+            newForm = newForm.replace('<div class="form-group">', '').replace('</div>', '');
+            console.log(newForm);
+            $('.dataTable tbody.specification-table-body').append(newForm);
 
-            $(newFormRow).append(deleteButton);
             collectionHolder.data('index', index + 1);
-            newLinkLi.before(newFormRow);
 
-            deleteButton.on('click', function (e) {
-                $(this).parent().remove();
+            $('.new-row-delete').on('click', function (e) {
+                let rowId = $(this).data('rowid');
+                $('tr#'+rowId).remove();
             })
         }
-
-
     </script>
 {% endblock %}

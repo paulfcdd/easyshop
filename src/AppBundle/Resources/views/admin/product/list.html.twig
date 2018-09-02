@@ -35,19 +35,17 @@
                     <td>{{ product.status }}</td>
                     <td>{{ product.quantity }}</td>
                     <td>{{ product.category.name }}</td>
-                    <td>{{ product.manufacturer.name }}</td>
+                    <td>{% if product.manufacturer %}{{ product.manufacturer.name }}{% endif %}</td>
                     <td>{{ product.featured }}</td>
                     <td>
                         <div class="btn-group">
                             <a href="{{ path('app.admin.product.edit', {'object': product.id}) }}"
                                type="button" class="btn btn-success">
                                 <span class="fa fa-edit"></span>
-                                Edit
                             </a>
                             <a href="{{ path('app.admin.product.delete', {'objectId': product.id}) }}"
                                type="button" class="btn btn-danger js-confirm-delete">
                                 <span class="fa fa-trash"></span>
-                                Delete
                             </a>
                         </div>
                     </td>
