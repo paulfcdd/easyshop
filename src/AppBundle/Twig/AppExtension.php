@@ -51,23 +51,6 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * @param string $targetFolder
-     * @param string $fileName
-     * @return mixed|string
-     */
-    public function getAsset(string $targetFolder, string $fileName)
-    {
-        $pattern = '/web/template/%theme_name%/%target_folder%/%file_name%';
-        $pattern = str_replace(
-            ['%theme_name%', '%target_folder%', '%file_name%'],
-            [$this->app->getActiveTemplate()->getName(), $targetFolder, $fileName],
-            $pattern
-        );
-
-        return $pattern;
-    }
-
-    /**
      * @param string $menuName
      *
      * @return array

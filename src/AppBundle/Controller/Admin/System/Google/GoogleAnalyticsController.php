@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Admin\System\Google;
 
 use AppBundle\Controller\Admin\AdminController;
+use AppBundle\Service\Google\GoogleAnalyticsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,9 +11,13 @@ class GoogleAnalyticsController extends AdminController
 {
     use CountriesNameMappingTrait;
 
-    public function __construct(\Doctrine\ORM\EntityManagerInterface $entityManager)
+    private $googleAnalyticsService;
+
+    public function __construct(EntityManagerInterface $entityManager, GoogleAnalyticsService $googleAnalyticsService)
     {
         parent::__construct($entityManager);
+
+        $this->googleAnalyticsService = $googleAnalyticsService;
     }
 
     /**
@@ -24,6 +29,8 @@ class GoogleAnalyticsController extends AdminController
      */
     public function indexAction()
     {
+        dump($this->googleAnalyticsService->getVisitorsByCountries());
+
         return $this->render('@App/admin/system/google/analytics.html.twig', [
             'visitorsByCountry' => $this->getSessionsByCountriesJson()
         ]);

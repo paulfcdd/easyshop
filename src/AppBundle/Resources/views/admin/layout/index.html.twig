@@ -1,5 +1,14 @@
 {% extends '@App/admin/base.html.twig' %}
 
+{% block title %}Your store | Dashboard{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('node_modules/jvectormap-next/jquery-jvectormap.css') }}">
+
+{% endblock %}
+
 {% block content_header %}
     <h1>
         Dashboard
@@ -227,7 +236,7 @@
                         <div class="col-md-9 col-sm-8">
                             <div class="pad">
                                 <!-- Map will be created here -->
-                                <div id="world-map-markers" style="height: 325px;"></div>
+                                <div id="world-map-markers" style="height: 325px;" data-visitorsByCountry="{{ visitorsByCountry }}"></div>
                             </div>
                         </div>
                         <!-- /.col -->
@@ -831,4 +840,45 @@
         <!-- /.col -->
     </div>
     <!-- /.row -->
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+
+    <!-- jvectormap  -->
+    <script src="{{ asset('node_modules/jvectormap-next/jquery-jvectormap.min.js') }}"></script>
+    <script src="{{ asset('node_modules/jvectormap-next/tests/assets/jquery-jvectormap-world-mill-en.js') }}"></script>
+
+    <script>
+        // jvectormap data
+        let visitorsData = $('#world-map').data('visitorsbycountry');
+
+        // World map by jvectormap
+        $('#world-map-markers').vectorMap({
+            map              : 'world_mill_en',
+            backgroundColor  : 'transparent',
+            regionStyle      : {
+                initial: {
+                    fill            : '#abd6e4',
+                    'fill-opacity'  : 1,
+                    stroke          : 'none',
+                    'stroke-width'  : 0,
+                    'stroke-opacity': 1
+                }
+            },
+            series           : {
+                regions: [
+                    {
+                        values           : visitorsData,
+                        scale            : ['#92c1dc', '#ebf4f9'],
+                        normalizeFunction: 'polynomial'
+                    }
+                ]
+            },
+            onRegionTipShow: function (e, tip, code) {
+                if (typeof visitorsData[code] !== 'undefined')
+                    tip.html(tip.html() + ': ' + visitorsData[code] + ' new visitors');
+            }
+        });
+    </script>
 {% endblock %}
