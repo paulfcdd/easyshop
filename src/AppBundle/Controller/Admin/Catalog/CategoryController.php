@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace AppBundle\Controller\Admin\Catalog;
 
 use AppBundle\Controller\AppController;
 use AppBundle\Entity\Category;

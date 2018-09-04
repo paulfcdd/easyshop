@@ -1,0 +1,100 @@
+{% extends '@App/admin/base.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('node_modules/jvectormap-next/jquery-jvectormap.css') }}">
+{% endblock %}
+
+{% block content_header %}
+    <h2>Google analytics panel</h2>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+       <section class="col-md-6">
+           <div class="box box-solid bg-light-blue-gradient">
+               <div class="box-header ui-sortable-handle" style="cursor: move;">
+                   <!-- tools box -->
+                   <div class="pull-right box-tools">
+                       <button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" title="" data-original-title="Date range">
+                           <i class="fa fa-calendar"></i></button>
+                       <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="" style="margin-right: 5px;" data-original-title="Collapse">
+                           <i class="fa fa-minus"></i></button>
+                   </div>
+                   <!-- /. tools -->
+
+                   <i class="fa fa-map-marker"></i>
+
+                   <h3 class="box-title">
+                       Visitors
+                   </h3>
+               </div>
+               <div class="box-body">
+                   <div id="world-map" style="height: 450px;"
+                        data-visitorsByCountry="{{ visitorsByCountry }}"></div>
+               </div>
+               {#<div class="box-footer no-border">#}
+                   {#<div class="row">#}
+                       {#<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">#}
+                           {#<div id="sparkline-1"><canvas width="80" height="50" style="display: inline-block; width: 80px; height: 50px; vertical-align: top;"></canvas></div>#}
+                           {#<div class="knob-label">Visitors</div>#}
+                       {#</div>#}
+                       {#<!-- ./col -->#}
+                       {#<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">#}
+                           {#<div id="sparkline-2"><canvas width="80" height="50" style="display: inline-block; width: 80px; height: 50px; vertical-align: top;"></canvas></div>#}
+                           {#<div class="knob-label">Online</div>#}
+                       {#</div>#}
+                       {#<!-- ./col -->#}
+                       {#<div class="col-xs-4 text-center">#}
+                           {#<div id="sparkline-3"><canvas width="80" height="50" style="display: inline-block; width: 80px; height: 50px; vertical-align: top;"></canvas></div>#}
+                           {#<div class="knob-label">Exists</div>#}
+                       {#</div>#}
+                       {#<!-- ./col -->#}
+                   {#</div>#}
+                   {#<!-- /.row -->#}
+               {#</div>#}
+           </div>
+       </section>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+
+    <script src="{{ asset('node_modules/jvectormap-next/jquery-jvectormap.min.js') }}"></script>
+    <script src="{{ asset('node_modules/jvectormap-next/tests/assets/jquery-jvectormap-world-mill-en.js') }}"></script>
+
+    <script>
+
+        // jvectormap data
+        let visitorsData = $('#world-map').data('visitorsbycountry');
+
+        // World map by jvectormap
+        $('#world-map').vectorMap({
+            map              : 'world_mill_en',
+            backgroundColor  : 'transparent',
+            regionStyle      : {
+                initial: {
+                    fill            : '#abd6e4',
+                    'fill-opacity'  : 1,
+                    stroke          : 'none',
+                    'stroke-width'  : 0,
+                    'stroke-opacity': 1
+                }
+            },
+            series           : {
+                regions: [
+                    {
+                        values           : visitorsData,
+                        scale            : ['#92c1dc', '#ebf4f9'],
+                        normalizeFunction: 'polynomial'
+                    }
+                ]
+            },
+            onRegionTipShow: function (e, tip, code) {
+                if (typeof visitorsData[code] !== 'undefined')
+                    tip.html(tip.html() + ': ' + visitorsData[code] + ' new visitors');
+            }
+        });
+    </script>
+{% endblock %}

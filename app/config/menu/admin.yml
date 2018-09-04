@@ -29,3 +29,13 @@ catalog:
       route: 'app.admin.specification.list'
       title: 'Specifications'
       submenu: null
+
+system:
+  title: System
+  icon: 'fa-cogs'
+  route: null
+  submenu:
+    google_analytics:
+      route: 'app.admin.system.google_analytics'
+      title: 'Google analytics'
+      submenu: null

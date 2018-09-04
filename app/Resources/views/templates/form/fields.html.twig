@@ -1,0 +1,18 @@
+{% block _product_specifications_entry_widget %}
+    <tr id="product_specifications___name___row">
+        <td></td>
+        <td>
+            {{ form_widget(form.specification) }}
+        </td>
+        <td>
+            {{ form_widget(form.description) }}
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger new-row-delete"
+                    data-rowid="product_specifications___name___row">
+                <span class="fa fa-times"></span>
+                Delete
+            </button>
+        </td>
+    </tr>
+{% endblock %}

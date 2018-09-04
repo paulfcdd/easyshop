@@ -1,3 +1,6 @@
+.widget-container {
+  display: none;
+}
 #tab_specifications {
   margin-bottom: 20px;
 }

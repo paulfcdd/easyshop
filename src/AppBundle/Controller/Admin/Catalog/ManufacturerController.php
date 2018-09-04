@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace AppBundle\Controller\Admin\Catalog;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity as Entity;
 use AppBundle\Form as Form;
 
-class ManufacturerController extends AbstractController
+class ManufacturerController extends AbstractCatalogController
 {
     /**
      * @Route("/admin/manufacturer", name="app.admin.manufacturer.list")

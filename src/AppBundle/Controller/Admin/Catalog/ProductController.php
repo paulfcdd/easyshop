@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace AppBundle\Controller\Admin\Catalog;
 
 use AppBundle\Entity as Entity;
 use AppBundle\Form as Form;
@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ProductController extends AbstractController
+class ProductController extends AbstractCatalogController
 {
     /**
      * @Route("/admin/product", name="app.admin.product.list")

@@ -1,11 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace AppBundle\Controller\Admin\Catalog;
 
-use AppBundle\Controller\Admin\Interfaces\BaseControllerInterface;
 use AppBundle\Controller\AppController;
 
-abstract class AbstractController extends AppController implements BaseControllerInterface
+abstract class AbstractCatalogController extends AppController implements AbstractCatalogInterface
 {
     /**
      * @param null|string $objectId

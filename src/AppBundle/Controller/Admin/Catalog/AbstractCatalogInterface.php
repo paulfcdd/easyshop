@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\Admin\Interfaces;
+namespace AppBundle\Controller\Admin\Catalog;
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface BaseControllerInterface
+interface AbstractCatalogInterface
 {
     /**
      * @return mixed
