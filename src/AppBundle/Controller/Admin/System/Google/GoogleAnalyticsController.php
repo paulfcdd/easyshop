@@ -15,7 +15,7 @@ class GoogleAnalyticsController extends AdminController
 
     public function __construct(EntityManagerInterface $entityManager, GoogleAnalyticsService $googleAnalyticsService)
     {
-        parent::__construct($entityManager);
+        parent::__construct($entityManager, $googleAnalyticsService);
 
         $this->googleAnalyticsService = $googleAnalyticsService;
     }
