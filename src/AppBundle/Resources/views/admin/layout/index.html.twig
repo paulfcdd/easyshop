@@ -4,9 +4,7 @@
 
 {% block css %}
     {{ parent() }}
-
     <link rel="stylesheet" href="{{ asset('node_modules/jvectormap-next/jquery-jvectormap.css') }}">
-
 {% endblock %}
 
 {% block content_header %}
@@ -82,6 +80,73 @@
     </div>
     <!-- /.row -->
 
+    <div class="row">
+        <div class="col-md-6">
+            <!-- MAP & BOX PANE -->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Visitors Report</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pad">
+                                <!-- Map will be created here -->
+                                <div id="world-map-markers" style="height: 325px;" data-visitorsByCountry="{{ visitorsByCountry }}"></div>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Browser Usage</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="chart-responsive">
+                                <canvas id="browser-usage"
+                                        height="150"
+                                        data-labels="{{ chartLabels }}"
+                                        data-visitors="{{ chartVisitors }}"
+                                >
+                                </canvas>
+                            </div>
+                            <!-- ./chart-responsive -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer no-padding">
+                </div>
+                <!-- /.footer -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -219,56 +284,6 @@
     <div class="row">
         <!-- Left col -->
         <div class="col-md-8">
-            <!-- MAP & BOX PANE -->
-            <div class="box box-success">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Visitors Report</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body no-padding">
-                    <div class="row">
-                        <div class="col-md-9 col-sm-8">
-                            <div class="pad">
-                                <!-- Map will be created here -->
-                                <div id="world-map-markers" style="height: 325px;" data-visitorsByCountry="{{ visitorsByCountry }}"></div>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-3 col-sm-4">
-                            <div class="pad box-pane-right bg-green" style="min-height: 280px">
-                                <div class="description-block margin-bottom">
-                                    <div class="sparkbar pad" data-color="#fff">90,70,90,70,75,80,70</div>
-                                    <h5 class="description-header">8390</h5>
-                                    <span class="description-text">Visits</span>
-                                </div>
-                                <!-- /.description-block -->
-                                <div class="description-block margin-bottom">
-                                    <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
-                                    <h5 class="description-header">30%</h5>
-                                    <span class="description-text">Referrals</span>
-                                </div>
-                                <!-- /.description-block -->
-                                <div class="description-block">
-                                    <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
-                                    <h5 class="description-header">70%</h5>
-                                    <span class="description-text">Organic</span>
-                                </div>
-                                <!-- /.description-block -->
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
             <div class="row">
                 <div class="col-md-6">
                     <!-- DIRECT CHAT -->
@@ -712,55 +727,6 @@
             </div>
             <!-- /.info-box -->
 
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Browser Usage</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="chart-responsive">
-                                <canvas id="pieChart" height="150"></canvas>
-                            </div>
-                            <!-- ./chart-responsive -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <ul class="chart-legend clearfix">
-                                <li><i class="fa fa-circle-o text-red"></i> Chrome</li>
-                                <li><i class="fa fa-circle-o text-green"></i> IE</li>
-                                <li><i class="fa fa-circle-o text-yellow"></i> FireFox</li>
-                                <li><i class="fa fa-circle-o text-aqua"></i> Safari</li>
-                                <li><i class="fa fa-circle-o text-light-blue"></i> Opera</li>
-                                <li><i class="fa fa-circle-o text-gray"></i> Navigator</li>
-                            </ul>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer no-padding">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#">United States of America
-                                <span class="pull-right text-red"><i class="fa fa-angle-down"></i> 12%</span></a></li>
-                        <li><a href="#">India <span class="pull-right text-green"><i class="fa fa-angle-up"></i> 4%</span></a>
-                        </li>
-                        <li><a href="#">China
-                                <span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> 0%</span></a></li>
-                    </ul>
-                </div>
-                <!-- /.footer -->
-            </div>
-            <!-- /.box -->
-
             <!-- PRODUCT LIST -->
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -849,6 +815,10 @@
     <script src="{{ asset('node_modules/jvectormap-next/jquery-jvectormap.min.js') }}"></script>
     <script src="{{ asset('node_modules/jvectormap-next/tests/assets/jquery-jvectormap-world-mill-en.js') }}"></script>
 
+    <!-- Chart.js -->
+    <script src="{{ asset('node_modules/chart.js/dist/Chart.js') }}"></script>
+
+    <!-- Init maps for Google analytics-->
     <script>
         // jvectormap data
         let visitorsData = $('#world-map-markers').data('visitorsbycountry');
@@ -881,4 +851,8 @@
             }
         });
     </script>
+
+    <!-- init chart for google analytics browser usage -->
+    <script src="{{ asset('admin_files/js/chart.js') }}"></script>
+
 {% endblock %}

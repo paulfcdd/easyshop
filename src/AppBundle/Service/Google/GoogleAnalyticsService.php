@@ -32,11 +32,11 @@ class GoogleAnalyticsService extends GoogleAbstractService
      * @param string $startDate
      * @param string $endDate
      *
-     * @return string
+     * @return string | array
      *
      * @throws \Exception
      */
-    public function getVisitorsByCountries(string $startDate = '30daysAgo', string $endDate = 'today')
+    final public function getVisitorsByCountries(string $startDate = '30daysAgo', string $endDate = 'today')
     {
         $data = [];
         $result = $this->analytics->data_ga->get(
@@ -60,6 +60,48 @@ class GoogleAnalyticsService extends GoogleAbstractService
         }
 
         return json_encode($data);
+
+    }
+
+
+    /**
+     * @param string $startDate
+     * @param string $endDate
+     *
+     * @return array
+     *
+     * @throws \Exception
+     */
+    final public function getBrowserUsage(string $startDate = '30daysAgo', string $endDate = 'today')
+    {
+        $data = [];
+        $labels = [];
+        $visitors = [];
+        $result = $this->analytics->data_ga->get(
+            'ga:' . $this->getFirstProfileId(),
+            $startDate,
+            $endDate,
+            'ga:sessions',
+            [
+                'dimensions' => 'ga:browser,ga:browserVersion',
+                'sort'=>'ga:sessions'
+            ]
+        );
+
+        if (count($result)>0) {
+            $rows = $result->getRows();
+
+            foreach ($rows as $row) {
+                $labels[] = $row[0];
+                $visitors[] = intval($row[2]);
+            }
+        }
+
+        $data['labels'] = $labels;
+        $data['visitors'] = $visitors;
+
+        return $data;
+
     }
 
     /**
