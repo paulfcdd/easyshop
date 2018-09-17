@@ -38,6 +38,10 @@ class GoogleAnalyticsService extends GoogleAbstractService
      */
     final public function getVisitorsByCountries(string $startDate = '30daysAgo', string $endDate = 'today')
     {
+
+//        dump($this->getProfileIdByName('Чичерина'));
+//        die;
+
         $data = [];
         $result = $this->analytics->data_ga->get(
             'ga:' . $this->getFirstProfileId(),
@@ -116,6 +120,65 @@ class GoogleAnalyticsService extends GoogleAbstractService
         $this->client->setScopes([$this->container->getParameter('google_analytics_scopes')]);
 
         return new \Google_Service_Analytics($this->client);
+    }
+
+    /**
+     * @param string $profileName
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    private function getProfileIdByName(string $profileName)
+    {
+        $accounts = $this->analytics->management_accounts->listManagementAccounts();
+
+        if (count($accounts->getItems()) > 0) {
+            $items = $accounts->getItems();
+            /** @var \Google_Service_Analytics_Account $targetAccount */
+            $targetAccount = null;
+
+            foreach ($items as $item) {
+                if ($item->getName() === $profileName) {
+                    $targetAccount = $item;
+                } else {
+                    continue;
+                }
+            }
+
+            if (!$targetAccount instanceof  \Google_Service_Analytics_Account) {
+                throw new \Exception(sprintf('No account with the name %s found', $profileName));
+            }
+
+            // Get the list of properties for the authorized user.
+            $properties = $this->analytics->management_webproperties
+                ->listManagementWebproperties($targetAccount->getId());
+
+            if (count($properties->getItems()) > 0) {
+                $items = $properties->getItems();
+                $firstPropertyId = $items[0]->getId();
+
+                // Get the list of views (profiles) for the authorized user.
+                $profiles = $this->analytics->management_profiles
+                    ->listManagementProfiles($targetAccount, $firstPropertyId);
+
+                if (count($profiles->getItems()) > 0) {
+                    $items = $profiles->getItems();
+
+                    // Return the first view (profile) ID.
+                    return $items[0]->getId();
+
+                } else {
+                    throw new \Exception('No views (profiles) found for this user.');
+                }
+            } else {
+                throw new \Exception('No properties found for this user.');
+            }
+
+
+        } else {
+            throw new \Exception('No accounts found for this user.');
+        }
     }
 
     /**
