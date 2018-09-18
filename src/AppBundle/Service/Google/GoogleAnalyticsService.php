@@ -2,12 +2,11 @@
 
 namespace AppBundle\Service\Google;
 
-use AppBundle\Controller\Admin\System\Google\CountriesNameMappingTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class GoogleAnalyticsService extends GoogleAbstractService
 {
-    use CountriesNameMappingTrait;
+    use AbbrToCountryNameTrait;
 
     /**
      * @var \Google_Service_Analytics
@@ -39,12 +38,9 @@ class GoogleAnalyticsService extends GoogleAbstractService
     final public function getVisitorsByCountries(string $startDate = '30daysAgo', string $endDate = 'today')
     {
 
-//        dump($this->getProfileIdByName('Чичерина'));
-//        die;
-
         $data = [];
         $result = $this->analytics->data_ga->get(
-            'ga:' . $this->getFirstProfileId(),
+            'ga:' . $this->getProfileIdByName('Чичерина'),
             $startDate,
             $endDate,
             'ga:sessions, ga:pageviews',
@@ -82,12 +78,12 @@ class GoogleAnalyticsService extends GoogleAbstractService
         $labels = [];
         $visitors = [];
         $result = $this->analytics->data_ga->get(
-            'ga:' . $this->getFirstProfileId(),
+            'ga:' . $this->getProfileIdByName('Чичерина'),
             $startDate,
             $endDate,
             'ga:sessions',
             [
-                'dimensions' => 'ga:browser,ga:browserVersion',
+                'dimensions' => 'ga:browser',
                 'sort'=>'ga:sessions'
             ]
         );
@@ -96,9 +92,11 @@ class GoogleAnalyticsService extends GoogleAbstractService
             $rows = $result->getRows();
 
             foreach ($rows as $row) {
+
                 $labels[] = $row[0];
-                $visitors[] = intval($row[2]);
+                $visitors[] = intval($row[1]);
             }
+
         }
 
         $data['labels'] = $labels;
@@ -129,7 +127,7 @@ class GoogleAnalyticsService extends GoogleAbstractService
      *
      * @throws \Exception
      */
-    private function getProfileIdByName(string $profileName)
+    public function getProfileIdByName(string $profileName)
     {
         $accounts = $this->analytics->management_accounts->listManagementAccounts();
 
@@ -141,8 +139,6 @@ class GoogleAnalyticsService extends GoogleAbstractService
             foreach ($items as $item) {
                 if ($item->getName() === $profileName) {
                     $targetAccount = $item;
-                } else {
-                    continue;
                 }
             }
 
@@ -155,12 +151,13 @@ class GoogleAnalyticsService extends GoogleAbstractService
                 ->listManagementWebproperties($targetAccount->getId());
 
             if (count($properties->getItems()) > 0) {
+
                 $items = $properties->getItems();
                 $firstPropertyId = $items[0]->getId();
 
                 // Get the list of views (profiles) for the authorized user.
                 $profiles = $this->analytics->management_profiles
-                    ->listManagementProfiles($targetAccount, $firstPropertyId);
+                    ->listManagementProfiles($targetAccount->getId(), $firstPropertyId);
 
                 if (count($profiles->getItems()) > 0) {
                     $items = $profiles->getItems();

@@ -81,71 +81,10 @@
     <!-- /.row -->
 
     <div class="row">
-        <div class="col-md-6">
-            <!-- MAP & BOX PANE -->
-            <div class="box box-success">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Visitors Report</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body no-padding">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="pad">
-                                <!-- Map will be created here -->
-                                <div id="world-map-markers" style="height: 325px;" data-visitorsByCountry="{{ visitorsByCountry }}"></div>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-        <div class="col-md-6">
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Browser Usage</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="chart-responsive">
-                                <canvas id="browser-usage"
-                                        height="150"
-                                        data-labels="{{ chartLabels }}"
-                                        data-visitors="{{ chartVisitors }}"
-                                >
-                                </canvas>
-                            </div>
-                            <!-- ./chart-responsive -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer no-padding">
-                </div>
-                <!-- /.footer -->
-            </div>
-            <!-- /.box -->
-        </div>
+        {% block google_analytics_row %}
+            {% include '@App/admin/partials/_map_box.html.twig' %}
+            {% include '@App/admin/partials/_browser_usage_box.html.twig' %}
+        {% endblock %}
     </div>
     <div class="row">
         <div class="col-md-12">

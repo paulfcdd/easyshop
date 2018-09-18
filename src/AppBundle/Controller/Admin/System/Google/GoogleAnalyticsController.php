@@ -3,13 +3,14 @@
 namespace AppBundle\Controller\Admin\System\Google;
 
 use AppBundle\Controller\Admin\AdminController;
+use AppBundle\Service\Google\AbbrToCountryNameTrait;
 use AppBundle\Service\Google\GoogleAnalyticsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class GoogleAnalyticsController extends AdminController
 {
-    use CountriesNameMappingTrait;
+    use AbbrToCountryNameTrait;
 
     private $googleAnalyticsService;
 
@@ -25,14 +26,13 @@ class GoogleAnalyticsController extends AdminController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @throws \Google_Exception
+     * @throws \Exception
      */
     public function indexAction()
     {
-        dump($this->googleAnalyticsService->getVisitorsByCountries());
 
         return $this->render('@App/admin/system/google/analytics.html.twig', [
-            'visitorsByCountry' => $this->getSessionsByCountriesJson()
+            'visitorsByCountry' => $this->googleAnalyticsService->getVisitorsByCountries('100daysAgo')
         ]);
     }
 

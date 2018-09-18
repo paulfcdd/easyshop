@@ -57,7 +57,7 @@ trait AbbrToCountryNameTrait
         'CV' => 'Cape Verde',
         'CX' => 'Christmas Island',
         'CY' => 'Cyprus',
-        'CZ' => 'Czech Republic',
+        'CZ' => 'Czechia',
         'DE' => 'Germany',
         'DJ' => 'Djibouti',
         'DK' => 'Denmark',
@@ -123,7 +123,7 @@ trait AbbrToCountryNameTrait
         'KR' => 'South Korea',
         'KW' => 'Kuwait',
         'KY' => 'Cayman Islands',
-        'KZ' => 'Kazakstan',
+        'KZ' => 'Kazakhstan',
         'LA' => 'Laos',
         'LB' => 'Lebanon',
         'LC' => 'Saint Lucia',
@@ -252,8 +252,12 @@ trait AbbrToCountryNameTrait
      */
     public function getCountryCodeByName(string $countryName)
     {
-        $mappingArrayFlip = array_flip($this->mappingArray);
+        if ($countryName !== '(not set)') {
 
-        return $mappingArrayFlip[$countryName];
+            $mappingArrayFlip = array_flip($this->mappingArray);
+
+            return $mappingArrayFlip[$countryName];
+
+        }
     }
 }
