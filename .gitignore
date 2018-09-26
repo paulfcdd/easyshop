@@ -4,3 +4,5 @@ var/
 vendor/
 app/config/parameters.yml
 web/node_modules/*
+
+app/config/google/ga-config.yml

@@ -83,10 +83,10 @@
     <div class="row">
         {% block google_analytics_row %}
 
-            {{ dump(gaConfig) }}
+            {% for widget in render_google_analytics_widgets(gaConfig) %}
+                {{ widget | raw }}
+            {% endfor %}
 
-            {% include '@App/admin/partials/_map_box.html.twig' %}
-            {% include '@App/admin/partials/_browser_usage_box.html.twig' %}
         {% endblock %}
     </div>
     <div class="row">

@@ -2,19 +2,19 @@
 
 namespace AppBundle\Controller\Admin\System\Google;
 
-use AppBundle\Controller\Admin\AdminController;
 use AppBundle\Service\Google\AbbrToCountryNameTrait;
 use AppBundle\Service\Google\GoogleAnalyticsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
 
 class GoogleAnalyticsController extends AbstractGoogleController
 {
+    private const GOOGLE_DAYS_AGO_PREFIX = 'daysAgo';
+    private const GOOGLE_TODAY_PREFIX = 'today';
+
     use AbbrToCountryNameTrait;
 
     private $googleAnalyticsService;
@@ -64,7 +64,10 @@ class GoogleAnalyticsController extends AbstractGoogleController
     {
         $config = $this->getConfig();
         $config['active_account_id'] = $request->request->get('account_id');
+        $config['date_from'] = $this->transformDateToGoogleAnalyticsFormat($request->request->get('date_from'));
+        $config['date_to'] = $this->transformDateToGoogleAnalyticsFormat($request->request->get('date_to'));
         $config['reports_to_show'] = $request->request->get('reports_to_show');
+
         if ($this->setConfig($config)) {
             $this->flashSuccess('Config saved');
             return $this->redirectToRoute('app.admin.system.google_analytics');
@@ -86,6 +89,7 @@ class GoogleAnalyticsController extends AbstractGoogleController
 
     /**
      * @param array $config
+     *
      * @return bool
      */
     protected function setConfig(array $config)
@@ -98,5 +102,20 @@ class GoogleAnalyticsController extends AbstractGoogleController
         } catch (\Exception $exception) {
             return false;
         }
+    }
+
+    /**
+     * @param string $date
+     *
+     * @return string
+     */
+    protected function transformDateToGoogleAnalyticsFormat(string $date)
+    {
+        $today = new \DateTime();
+        $userDate = \DateTime::createFromFormat('d.m.Y', $date);
+        $diff = $userDate->diff($today)->days;
+        $preparedValue = $diff > 0 ? $diff . self::GOOGLE_DAYS_AGO_PREFIX : self::GOOGLE_TODAY_PREFIX;
+
+        return $preparedValue;
     }
 }

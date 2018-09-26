@@ -16,12 +16,12 @@ class AppExtension extends AbstractExtension
     /**
      * @var \AppBundle\Controller\AppController
      */
-    private $app;
+    public $app;
 
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private $container;
+    public $container;
 
     /**
      * AppExtension constructor.

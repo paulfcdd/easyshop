@@ -2,8 +2,8 @@
 
 namespace AppBundle\Service\Google;
 
-use Symfony\Bridge\Twig\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class GoogleAnalyticsService extends GoogleAbstractService
 {
@@ -20,10 +20,7 @@ class GoogleAnalyticsService extends GoogleAbstractService
      */
     private $analytics;
 
-    /**
-     * @var \Symfony\Bridge\Twig\TwigEngine
-     */
-    private $templating;
+    private $config;
 
     /**
      * GoogleAnalyticsService constructor.
@@ -33,17 +30,11 @@ class GoogleAnalyticsService extends GoogleAbstractService
      *
      * @throws \Google_Exception
      */
-    public function __construct(ContainerInterface $container, TwigEngine $templating)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
 
         $this->analytics = $this->initAnalytics();
-        $this->templating = $templating;
-    }
-
-    final public function renderBlockAction(string $methodToCall, array $parameters)
-    {
-
     }
 
     /**
@@ -59,7 +50,7 @@ class GoogleAnalyticsService extends GoogleAbstractService
 
         $data = [];
         $result = $this->analytics->data_ga->get(
-            'ga:' . $this->getProfileIdByName('Чичерина'),
+            'ga:' . $this->getProfileIdById($this->config->active_account_id),
             $startDate,
             $endDate,
             'ga:sessions, ga:pageviews',
@@ -97,7 +88,7 @@ class GoogleAnalyticsService extends GoogleAbstractService
         $labels = [];
         $visitors = [];
         $result = $this->analytics->data_ga->get(
-            'ga:' . $this->getProfileIdByName('Чичерина'),
+            'ga:' . $this->getProfileIdById($this->config->active_account_id),
             $startDate,
             $endDate,
             'ga:sessions',
@@ -135,6 +126,7 @@ class GoogleAnalyticsService extends GoogleAbstractService
         $this->client->setApplicationName($this->container->getParameter('google_analytics_application_name'));
         $this->client->setAuthConfig($this->container->getParameter('google_analytics_credentials'));
         $this->client->setScopes([$this->container->getParameter('google_analytics_scopes')]);
+        $this->config = $this->getConfig();
 
         return new \Google_Service_Analytics($this->client);
     }
@@ -160,13 +152,13 @@ class GoogleAnalyticsService extends GoogleAbstractService
     }
 
     /**
-     * @param string $profileName
+     * @param string $profileId
      *
      * @return mixed
      *
      * @throws \Exception
      */
-    public function getProfileIdByName(string $profileName)
+    public function getProfileIdById(string $profileId)
     {
         $accounts = $this->analytics->management_accounts->listManagementAccounts();
 
@@ -176,13 +168,13 @@ class GoogleAnalyticsService extends GoogleAbstractService
             $targetAccount = null;
 
             foreach ($items as $item) {
-                if ($item->getName() === $profileName) {
+                if ($item->getId() === $profileId) {
                     $targetAccount = $item;
                 }
             }
 
             if (!$targetAccount instanceof  \Google_Service_Analytics_Account) {
-                throw new \Exception(sprintf('No account with the name %s found', $profileName));
+                throw new \Exception(sprintf('No account with the id %s found', $profileId));
             }
 
             // Get the list of properties for the authorized user.
@@ -218,43 +210,18 @@ class GoogleAnalyticsService extends GoogleAbstractService
     }
 
     /**
-     * @return mixed
-     * @throws \Exception
+     * @param bool $asObject
+     *
+     * @return \stdClass | array
      */
-    private function getFirstProfileId()
+    private function getConfig(bool $isObject = true)
     {
-        $accounts = $this->analytics->management_accounts->listManagementAccounts();
+        $config = Yaml::parseFile($this->container->getParameter('google_analytics_config'));
 
-        if (count($accounts->getItems()) > 0) {
-            $items = $accounts->getItems();
-            $firstAccountId = $items[0]->getId();
-
-            // Get the list of properties for the authorized user.
-            $properties = $this->analytics->management_webproperties
-                ->listManagementWebproperties($firstAccountId);
-
-            if (count($properties->getItems()) > 0) {
-                $items = $properties->getItems();
-                $firstPropertyId = $items[0]->getId();
-
-                // Get the list of views (profiles) for the authorized user.
-                $profiles = $this->analytics->management_profiles
-                    ->listManagementProfiles($firstAccountId, $firstPropertyId);
-
-                if (count($profiles->getItems()) > 0) {
-                    $items = $profiles->getItems();
-
-                    // Return the first view (profile) ID.
-                    return $items[0]->getId();
-
-                } else {
-                    throw new \Exception('No views (profiles) found for this user.');
-                }
-            } else {
-                throw new \Exception('No properties found for this user.');
-            }
-        } else {
-            throw new \Exception('No accounts found for this user.');
+        if ($isObject) {
+            return (object)$config;
         }
+
+        return $config;
     }
 }

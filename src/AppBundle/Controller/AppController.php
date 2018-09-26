@@ -45,6 +45,15 @@ class AppController extends Controller
         );
     }
 
+    public function renderGoogleAnalyticsWidget(string $templateName, $data)
+    {
+        dump($data);
+
+        $template = $this->prepareTemplateNameFromFunctionName($templateName);
+
+        return $this->render('@App/admin/partials/_browser_usage.html.twig');
+    }
+
     /**
      * @return \AppBundle\Entity\Template
      */
@@ -172,5 +181,14 @@ class AppController extends Controller
         );
 
         return $pattern;
+    }
+
+    private function prepareTemplateNameFromFunctionName(string $functionName)
+    {
+        $functionName = str_replace('get', '', $functionName);
+        $functionNameArray = array_map('strtolower', preg_split('/(?=[A-Z])/', $functionName));
+        $templateName = implode('_', $functionNameArray);
+
+        return $templateName;
     }
 }

@@ -202,6 +202,7 @@ trait AbbrToCountryNameTrait
         'SM' => 'San Marino',
         'SN' => 'Senegal',
         'SO' => 'Somalia',
+        'RS' => 'Serbia',
         'SR' => 'Suriname',
         'ST' => 'Sao Tome and Principe',
         'SV' => 'El Salvador',
@@ -244,6 +245,7 @@ trait AbbrToCountryNameTrait
         'ZA' => 'South Africa',
         'ZM' => 'Zambia',
         'ZW' => 'Zimbabwe',
+        'JE' => 'Jersey'
     ];
 
     /**
