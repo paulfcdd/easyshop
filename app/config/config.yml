@@ -9,7 +9,8 @@ parameters:
     locale: en
     mailer_user: test@test.pl
     google_analytics_application_name: 'Google'
-    google_analytics_auth_config: '%kernel.project_dir%/app/config/google/service-account-credentials.json'
+    google_analytics_credentials: '%kernel.project_dir%/app/config/google/ga-credentials.json'
+    google_analytics_config: '%kernel.project_dir%/app/config/google/ga-config.yml'
     google_analytics_scopes: 'https://www.googleapis.com/auth/analytics.readonly'
 
 framework:
@@ -28,7 +29,8 @@ framework:
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
-        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+#        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        save_path: '/var/lib/php/sessions'
     fragments: ~
     http_method_override: true
     assets: ~
@@ -55,6 +57,7 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
+        unix_socket: /tmp/mysql.sock
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'

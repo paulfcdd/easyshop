@@ -405,8 +405,6 @@
                         <p><a class="item_add timer_add" href="#">add to cart </a></p>
                     </div>
                     <div id="counter"></div>
-                    <script src="js/jquery.countdown.js"></script>
-                    <script src="js/script.js"></script>
                 </div>
                 <div class="col-md-4 timer-grid-right animated wow slideInRight" data-wow-delay=".5s">
                     <div class="timer-grid-right1">
@@ -423,16 +421,20 @@
     <!-- //new-timer -->
     <div class="collections-bottom">
         <div class="container">
-            <div class="newsletter animated wow slideInUp animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInUp;">
+            <div class="newsletter animated wow slideInUp animated" data-wow-delay=".5s"
+                 style="visibility: visible; animation-delay: 0.5s; animation-name: slideInUp;">
                 <h3>Newsletter</h3>
                 <p>Join us now to get all news and special offers.</p>
                 <form>
                     <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-                    <input type="email" value="Enter your email address" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter your email address';}" required="">
+                    <input type="email" value="Enter your email address" onfocus="this.value = '';"
+                           onblur="if (this.value == '') {this.value = 'Enter your email address';}" required="">
                     <input type="submit" value="Join Us">
                 </form>
             </div>
         </div>
+
+        <!-- mibew button -->
     </div>
 {% endblock %}
 
@@ -444,4 +446,5 @@
         new WOW().init();
         $('.example1').wmuSlider();
     </script>
+
 {% endblock %}

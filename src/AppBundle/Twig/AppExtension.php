@@ -16,12 +16,12 @@ class AppExtension extends AbstractExtension
     /**
      * @var \AppBundle\Controller\AppController
      */
-    private $app;
+    public $app;
 
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private $container;
+    public $container;
 
     /**
      * AppExtension constructor.
@@ -48,23 +48,6 @@ class AppExtension extends AbstractExtension
             new TwigFunction('sort_specifications_by_group', [$this, 'sortSpecificationsByGroup']),
             new TwigFunction('get_product_slug', [$this, 'getProductSlug'])
         ];
-    }
-
-    /**
-     * @param string $targetFolder
-     * @param string $fileName
-     * @return mixed|string
-     */
-    public function getAsset(string $targetFolder, string $fileName)
-    {
-        $pattern = '/web/template/%theme_name%/%target_folder%/%file_name%';
-        $pattern = str_replace(
-            ['%theme_name%', '%target_folder%', '%file_name%'],
-            [$this->app->getActiveTemplate()->getName(), $targetFolder, $fileName],
-            $pattern
-        );
-
-        return $pattern;
     }
 
     /**
