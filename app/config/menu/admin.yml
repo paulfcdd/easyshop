@@ -31,11 +31,11 @@ catalog:
       submenu: null
 
 system:
-  title: System
+  title: Settings
   icon: 'fa-cogs'
   route: null
   submenu:
     google_analytics:
-      route: 'app.admin.system.google_analytics'
-      title: 'Google analytics'
+      route: 'app.admin.system.google'
+      title: 'Google'
       submenu: null
