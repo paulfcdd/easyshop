@@ -2,11 +2,18 @@
 
 namespace AppBundle\Service\Google;
 
+use Symfony\Bridge\Twig\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class GoogleAnalyticsService extends GoogleAbstractService
 {
     use AbbrToCountryNameTrait;
+
+    public const REPORTS_MAP = [
+        'getVisitorsByCountries' => 'Visitors by countries',
+        'getBrowserUsage' => 'Browser usage',
+        'getTrafficSources' => 'Traffic sources'
+    ];
 
     /**
      * @var \Google_Service_Analytics
@@ -14,17 +21,29 @@ class GoogleAnalyticsService extends GoogleAbstractService
     private $analytics;
 
     /**
+     * @var \Symfony\Bridge\Twig\TwigEngine
+     */
+    private $templating;
+
+    /**
      * GoogleAnalyticsService constructor.
      *
      * @param ContainerInterface $container
+     * @param TwigEngine $templating
      *
      * @throws \Google_Exception
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, TwigEngine $templating)
     {
         parent::__construct($container);
 
         $this->analytics = $this->initAnalytics();
+        $this->templating = $templating;
+    }
+
+    final public function renderBlockAction(string $methodToCall, array $parameters)
+    {
+
     }
 
     /**
@@ -114,10 +133,30 @@ class GoogleAnalyticsService extends GoogleAbstractService
     private function initAnalytics()
     {
         $this->client->setApplicationName($this->container->getParameter('google_analytics_application_name'));
-        $this->client->setAuthConfig($this->container->getParameter('google_analytics_auth_config'));
+        $this->client->setAuthConfig($this->container->getParameter('google_analytics_credentials'));
         $this->client->setScopes([$this->container->getParameter('google_analytics_scopes')]);
 
         return new \Google_Service_Analytics($this->client);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAccountList()
+    {
+        $accounts = $this->analytics->management_accounts->listManagementAccounts();
+        $accountList = [];
+        $i = 0;
+
+        /** @var \Google_Service_Analytics_Account $account */
+        foreach ($accounts as $account)
+        {
+            $accountList[$i]['name'] = $account->getName();
+            $accountList[$i]['id'] = $account->getId();
+            $i++;
+        }
+
+        return $accountList;
     }
 
     /**

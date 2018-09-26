@@ -9,7 +9,8 @@ parameters:
     locale: en
     mailer_user: test@test.pl
     google_analytics_application_name: 'Google'
-    google_analytics_auth_config: '%kernel.project_dir%/app/config/google/ga-credentials.json'
+    google_analytics_credentials: '%kernel.project_dir%/app/config/google/ga-credentials.json'
+    google_analytics_config: '%kernel.project_dir%/app/config/google/ga-config.yml'
     google_analytics_scopes: 'https://www.googleapis.com/auth/analytics.readonly'
 
 framework:

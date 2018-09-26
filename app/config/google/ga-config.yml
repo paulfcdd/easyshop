@@ -1,0 +1,4 @@
+active_account_id: '91044287'
+reports_to_show:
+    - getVisitorsByCountries
+    - getBrowserUsage

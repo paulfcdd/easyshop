@@ -82,6 +82,9 @@
 
     <div class="row">
         {% block google_analytics_row %}
+
+            {{ dump(gaConfig) }}
+
             {% include '@App/admin/partials/_map_box.html.twig' %}
             {% include '@App/admin/partials/_browser_usage_box.html.twig' %}
         {% endblock %}
