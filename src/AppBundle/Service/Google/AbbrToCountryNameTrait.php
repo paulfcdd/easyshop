@@ -245,7 +245,8 @@ trait AbbrToCountryNameTrait
         'ZA' => 'South Africa',
         'ZM' => 'Zambia',
         'ZW' => 'Zimbabwe',
-        'JE' => 'Jersey'
+        'JE' => 'Jersey',
+        'ME' => 'Montenegro'
     ];
 
     /**
