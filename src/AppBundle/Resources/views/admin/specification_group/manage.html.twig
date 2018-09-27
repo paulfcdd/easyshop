@@ -1,0 +1,28 @@
+{% extends '@App/admin/layout/manage.html.twig' %}
+
+{% block manage_title %}
+    Manage specification group
+{% endblock %}
+
+{% block manage_content %}
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tab_general" data-toggle="tab" aria-expanded="true">
+                    General
+                </a>
+            </li>
+        </ul>
+        <div class="box-body">
+
+            {{ form_start(form) }}
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_general">
+                    {{ form_row(form.name) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <!-- /.tab-content -->
+    </div>
+{% endblock %}

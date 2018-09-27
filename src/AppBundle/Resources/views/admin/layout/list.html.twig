@@ -1,0 +1,40 @@
+{% extends '@App/admin/base.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('node_modules/datatables/media/css/jquery.dataTables.min.css') }}">
+{% endblock %}
+
+{% block content_header %}
+    <h1>
+        {% block list_title %}{% endblock %}
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+           {% include '@App/admin/partials/_flash_messages.html.twig' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                {% block list_content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,232 @@
+{% extends '@App/admin/layout/manage.html.twig' %}
+
+{% block manage_title %}Manage product{% endblock %}
+
+{% block preview_link %}
+    {% if product is defined %}
+        <strong>
+            <p>Permalink: <a href="{{ path('app.front.single_product', {
+                    'category': product.category.name | lower,
+                    'product': get_product_slug(product)
+                }) }}" target="_blank">{{ url('app.front.single_product', {
+                        'category': product.category.name | lower,
+                        'product': get_product_slug(product)
+                    }) }}</a></p>
+        </strong>
+    {% endif %}
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('app.admin.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ path('app.admin.product.list') }}">Products</a></li>
+        {% if product is defined %}
+            <li class="active">{{ product.name }}</li>
+        {% else %}
+            <li class="active">New product</li>
+        {% endif %}
+    </ol>
+{% endblock %}
+
+{% block manage_content %}
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tab_general" data-toggle="tab" aria-expanded="true">
+                    General
+                </a>
+            </li>
+            <li class="">
+                <a href="#tab_data" data-toggle="tab" aria-expanded="false">
+                    Data
+                </a>
+            </li>
+            <li class="">
+                <a href="#tab_seo" data-toggle="tab" aria-expanded="false">
+                    SEO
+                </a>
+            </li>
+            <li class="">
+                <a href="#tab_specifications" data-toggle="tab" aria-expanded="false">
+                    Specifications
+                </a>
+            </li>
+
+            <li class="">
+                <a href="#tab_photos" data-toggle="tab" aria-expanded="false">
+                    Photos
+                </a>
+            </li>
+        </ul>
+        <div class="box-body">
+
+            {{ form_start(form) }}
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_general">
+                    <div class="col-md-6">
+                        {{ form_row(form.name) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_label(form.slug) }}
+                        <div class="input-group">
+                            {{ form_widget(form.slug) }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary translit-generate"
+                                        data-toggle="tooltip" data-placement="top"
+                                        type="button"
+                                        title="Generate slug">
+                                    <i class="fa fa-link"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        {{ form_row(form.description) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_row(form.price) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_row(form.model) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_row(form.status) }}
+                    </div>
+
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_data">
+
+                    <div class="col-md-6">{{ form_row(form.category) }}</div>
+                    <div class="col-md-6">{{ form_row(form.manufacturer) }}</div>
+                    <div class="col-md-6">{{ form_row(form.quantity) }}</div>
+                    <div class="col-md-6"> {{ form_row(form.minimumQuantity) }}</div>
+                    <div class="col-md-6"> {{ form_row(form.featured) }}</div>
+
+                </div>
+                <div class="tab-pane" id="tab_seo">
+
+                    <div class="col-md-6">{{ form_row(form.metaTitle) }}</div>
+                    <div class="col-md-6">{{ form_row(form.metaKeywords) }}</div>
+                    <div class="col-md-12">{{ form_row(form.metaDescription) }}</div>
+
+                </div>
+                <div class="tab-pane" id="tab_specifications">
+
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover dataTable"
+                               data-widget-tags="{{ '<tr></tr>'|e }}">
+                            <thead>
+                            <tr>
+                                <th>Specification Group</th>
+                                <th>Specification</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="specification-table-body">
+                            {% for specificationField in form.specifications %}
+                                <tr id="object-id-{{ specificationField.specification.parent.vars.value.id }}">
+                                    <td class="text-center">
+                                        <strong>
+                                            {{ specificationField.specification.parent.vars.value.specification.specificationGroup.name }}
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {{ form_widget(specificationField.specification) }}
+                                    </td>
+                                    <td>
+                                        {{ form_widget(specificationField.description) }}
+                                    </td>
+                                    <td class="right-side">
+                                        <button type="button" class="btn btn-danger ajax-delete"
+                                                data-entity="product_specification"
+                                                data-objectId="{{ specificationField.specification.parent.vars.value.id }}"
+                                                data-confirmMessage="Are you sure you want to delete specification?"
+                                                data-deleteurl="{{ path('app.admin.api.delete_object') }}"
+                                        >
+                                            <span class="fa fa-times"></span>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>
+                                    <button type="button" class="btn btn-primary new-row-button">
+                                        <span class="fa fa-plus"></span>
+                                    </button>
+                                </th>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="widget-container">
+                            {{ form_widget(form.specifications) }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane" id="tab_photos">
+                    <p>photos</p>
+                </div>
+                <div class="col-md-12">
+                    {{ form_widget(form.save) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <!-- /.tab-content -->
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ asset('admin_files/js/translit.js') }}"></script>
+    <script src="{{ asset('node_modules/select2/dist/js/select2.full.min.js') }}"></script>
+
+    <script>
+
+        $('.select-2-selector').select2({
+            width: '100%',
+            'background-color': '#00f'
+        });
+
+        jQuery(document).ready(function () {
+            let $collectionHolder =  $('div#product_specifications');
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+            $('.new-row-button').on('click', function (e) {
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder);
+            });
+        });
+
+        function addTagForm(collectionHolder) {
+            let prototype = collectionHolder.data('prototype');
+            let index = collectionHolder.data('index');
+            let newForm = prototype.replace(/__name__/g, index);
+            newForm = newForm.replace('<div class="form-group">', '').replace('</div>', '');
+            console.log(newForm);
+            $('.dataTable tbody.specification-table-body').append(newForm);
+            collectionHolder.data('index', index + 1);
+            $('.new-row-delete').on('click', function (e) {
+                let rowId = $(this).data('rowid');
+                $('tr#'+rowId).remove();
+            })
+        }
+
+
+    </script>
+{% endblock %}

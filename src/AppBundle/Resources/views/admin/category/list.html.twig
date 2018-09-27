@@ -1,0 +1,94 @@
+{% extends '@App/admin/base.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('node_modules/datatables/media/css/jquery.dataTables.min.css') }}">
+{% endblock %}
+
+{% block content_header %}
+    <h1>
+        Categories list
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <a href="{{ path('app.admin.category.add') }}" role="button" class="btn btn-success">Add category</a>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Parent</th>
+                            <th>Visible in menu</th>
+                            <th>Date of create</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for category in categories %}
+                            <tr>
+                                <td>{{ category.id }}</td>
+                                <td>{{ category.name }}</td>
+                                <td>{% if category.parent %}{{ category.parent.name }}{% endif %}</td>
+                                <td>{% if category.showInMenu %}Yes{% else %}No{% endif %}</td>
+                                <td>{{ category.dateCreated | date('d.m.Y') }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ path('app.admin.category.edit', {'id': category.id}) }}"
+                                           type="button" class="btn btn-success">
+                                            <span class="fa fa-edit"></span>
+                                            Edit
+                                        </a>
+                                        <a href="{{ path('app.admin.category.delete', {'id': category.id}) }}"
+                                           type="button" class="btn btn-danger js-confirm-delete">
+                                            <span class="fa fa-trash"></span>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}

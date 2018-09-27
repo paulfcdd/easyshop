@@ -1,0 +1,41 @@
+dashboard:
+  route: 'app.admin.index'
+  icon: 'fa-tachometer'
+  title: 'Dashboard'
+  submenu: null
+
+catalog:
+  title: Catalog
+  icon: 'fa-tags'
+  route: null
+  submenu:
+    category:
+      route: 'app.admin.category.list'
+      title: 'Categories'
+      submenu: null
+    product:
+      route: 'app.admin.product.list'
+      title: 'Products'
+      submenu: null
+    manufacturer:
+      route: 'app.admin.manufacturer.list'
+      title: 'Manufacturers'
+      submenu: null
+    specification_group:
+      route: 'app.admin.specification_group.list'
+      title: 'Specification group'
+      submenu: null
+    specification:
+      route: 'app.admin.specification.list'
+      title: 'Specifications'
+      submenu: null
+
+system:
+  title: Settings
+  icon: 'fa-cogs'
+  route: null
+  submenu:
+    google_analytics:
+      route: 'app.admin.system.google'
+      title: 'Google'
+      submenu: null

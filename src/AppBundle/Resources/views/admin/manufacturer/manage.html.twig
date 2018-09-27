@@ -1,0 +1,37 @@
+{% extends '@App/admin/layout/manage.html.twig' %}
+
+{% block manage_title %}Manage manufacturer{% endblock %}
+
+{% block manage_content %}
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tab_general" data-toggle="tab" aria-expanded="true">
+                    General
+                </a>
+            </li>
+            <li class="">
+                <a href="#tab_seo" data-toggle="tab" aria-expanded="false">
+                    SEO
+                </a>
+            </li>
+        </ul>
+        <div class="box-body">
+
+            {{ form_start(form) }}
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_general">
+                    {{ form_row(form.name) }}
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_seo">
+                    {{ form_row(form.metaTitle) }}
+                    {{ form_row(form.metaKeywords) }}
+                    {{ form_row(form.metaDescription) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <!-- /.tab-content -->
+    </div>
+{% endblock %}

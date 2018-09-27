@@ -7,10 +7,15 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    mailer_user: test@test.pl
+    google_analytics_application_name: 'Google'
+    google_analytics_credentials: '%kernel.project_dir%/app/config/google/ga-credentials.json'
+    google_analytics_config: '%kernel.project_dir%/app/config/google/ga-config.yml'
+    google_analytics_scopes: 'https://www.googleapis.com/auth/analytics.readonly'
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ['%locale%'] }
+    translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -24,17 +29,23 @@ framework:
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
-        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+#        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        save_path: '/var/lib/php/sessions'
     fragments: ~
     http_method_override: true
     assets: ~
     php_errors:
         log: true
+    templating:
+        engines: ['twig']
 
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes:
+    - 'bootstrap_3_layout.html.twig'
+    - '/templates/form/fields.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -46,6 +57,7 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
+        unix_socket: /tmp/mysql.sock
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
@@ -69,3 +81,11 @@ swiftmailer:
 sensio_framework_extra:
    router:
         annotations: false
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"

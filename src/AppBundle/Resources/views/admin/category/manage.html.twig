@@ -1,0 +1,76 @@
+{% extends '@App/admin/base.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content_header %}
+    <h1>
+        Manage category
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#tab_general" data-toggle="tab" aria-expanded="true">
+                            General
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#tab_seo" data-toggle="tab" aria-expanded="false">
+                            SEO
+                        </a>
+                    </li>
+                </ul>
+                <div class="box-body">
+
+                    {{ form_start(form) }}
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_general">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.parent) }}
+                            {{ form_row(form.showInMenu) }}
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="tab_seo">
+                            {{ form_row(form.metaTitle) }}
+                            {{ form_row(form.metaKeywords) }}
+                            {{ form_row(form.metaDescription) }}
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+                <!-- /.tab-content -->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}

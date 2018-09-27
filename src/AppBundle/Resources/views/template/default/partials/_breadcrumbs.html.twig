@@ -1,0 +1,26 @@
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+            <li>
+                <a href="{{ path('app.front.index') }}">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    Home
+                </a>
+            </li>
+            {% set lastBreadcrumb = breadcrumbs | last %}
+            {% for breadcrumb in breadcrumbs %}
+                <li {% if breadcrumb.name == lastBreadcrumb.name %}class="active"{% endif %}>
+                    {% if breadcrumb.name != lastBreadcrumb.name and breadcrumb.id is defined %}
+                        <a href="{{ path('app.front.product.list', {
+                            'category': breadcrumb.id
+                        }) }}">
+                            {{ breadcrumb.name }}
+                        </a>
+                        {% else %}
+                            {{ breadcrumb.name }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>

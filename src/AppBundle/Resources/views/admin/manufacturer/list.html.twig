@@ -1,0 +1,45 @@
+{% extends '@App/admin/layout/list.html.twig' %}
+
+{% block list_title %}
+    Manufacturers list
+{% endblock %}
+
+{% block list_content %}
+    <div class="box-header">
+        <a href="{{ path('app.admin.manufacturer.add') }}" role="button" class="btn btn-success">Add manufacturer</a>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <table class="table table-bordered table-hover dataTable">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for manufacturer in manufacturers %}
+                <tr>
+                    <td>{{ manufacturer.id }}</td>
+                    <td>{{ manufacturer.name }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{{ path('app.admin.manufacturer.edit', {'object': manufacturer.id}) }}"
+                               type="button" class="btn btn-success">
+                                <span class="fa fa-edit"></span>
+                                Edit
+                            </a>
+                            <a href="{{ path('app.admin.manufacturer.delete', {'objectId': manufacturer.id}) }}"
+                               type="button" class="btn btn-danger js-confirm-delete">
+                                <span class="fa fa-trash"></span>
+                                Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
