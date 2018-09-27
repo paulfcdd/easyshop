@@ -34,7 +34,7 @@ class ProductController extends AbstractCatalogController
         ];
 
         $form = $this->getForm(
-            Form\Product::class,
+            Form\ProductType::class,
             $options
         );
 
@@ -56,7 +56,7 @@ class ProductController extends AbstractCatalogController
         $product = $this->getDoctrine()->getRepository(Entity\Product::class)->findOneById($object);
 
         $form = $this->getForm(
-            Form\Product::class,
+            Form\ProductType::class,
             [
                 'action' => $this->generateUrl('app.admin.product.handle_form', [
                     'object' => $product->getId()
@@ -86,7 +86,7 @@ class ProductController extends AbstractCatalogController
         /** @var \AppBundle\Entity\Product $product */
         $product = $this->checkObject($object, Entity\Product::class);
 
-        $form = $this->getForm(Form\Product::class, [], $request, $product);
+        $form = $this->getForm(Form\ProductType::class, [], $request, $product);
 
         if ($form->isValid()) {
             /** @var \AppBundle\Entity\Product $formData */

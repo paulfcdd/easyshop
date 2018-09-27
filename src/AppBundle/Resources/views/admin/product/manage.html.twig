@@ -180,7 +180,9 @@
                 </div>
 
                 <div class="tab-pane" id="tab_photos">
-                    <p>photos</p>
+                    <div class="col-md-12">
+                        {{ form_widget(form.files) }}
+                    </div>
                 </div>
                 <div class="col-md-12">
                     {{ form_widget(form.save) }}
@@ -195,14 +197,8 @@
 {% block js %}
     {{ parent() }}
     <script src="{{ asset('admin_files/js/translit.js') }}"></script>
-    <script src="{{ asset('node_modules/select2/dist/js/select2.full.min.js') }}"></script>
 
     <script>
-
-        $('.select-2-selector').select2({
-            width: '100%',
-            'background-color': '#00f'
-        });
 
         jQuery(document).ready(function () {
             let $collectionHolder =  $('div#product_specifications');

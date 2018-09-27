@@ -14,7 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Product
 {
-    use Traits\SeoTrait;
+    use Traits\SeoTrait,
+        Traits\FileTrait;
 
     public const STATUSES = [
         1 => 'Enabled',

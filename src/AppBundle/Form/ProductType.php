@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Form\Type\CategorySelectorType;
+use AppBundle\Form\Type\FileUploadType;
 use AppBundle\Form\Type\MetaTagType;
 use AppBundle\Form\Type\SelectorType;
 use AppBundle\Form\Type\WysiwygEditorType;
@@ -16,7 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity as Entity;
 
-class Product extends AbstractType
+class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -67,6 +68,7 @@ class Product extends AbstractType
                     'novalidate'
                 ],
             ])
+            ->add('files', FileUploadType::class, [])
             ->add('save', SubmitType::class, []);
     }
 
