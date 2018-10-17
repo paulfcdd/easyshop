@@ -1,5 +1,7 @@
 {% extends '@App/template/default/base.html.twig' %}
 
+{% block title %}{{ product.metaTitle }}{% endblock %}
+
 {% block css %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('template/default/css/flexslider.css') }}" type="text/css" media="screen"/>

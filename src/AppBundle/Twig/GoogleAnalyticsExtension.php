@@ -10,7 +10,12 @@ use Twig\TwigFunction;
 
 class GoogleAnalyticsExtension extends AppExtension
 {
+    private const GOOGLE_DAYS_AGO_PREFIX = 'daysAgo';
+    private const GOOGLE_TODAY_PREFIX = 'today';
+
+    /** @var \AppBundle\Service\Google\GoogleAnalyticsService  */
     private $googleAnalyticsService;
+    /** @var \Twig_Environment  */
     private $environment;
 
     public function __construct(
@@ -37,7 +42,8 @@ class GoogleAnalyticsExtension extends AppExtension
         ];
     }
 
-    /**
+
+        /**
      * @param array|null $config
      * @return array|null
      * @throws \Twig_Error_Loader
@@ -47,15 +53,14 @@ class GoogleAnalyticsExtension extends AppExtension
     public function renderGoogleAnalyticsWidgets(array $config = null)
     {
         if ($config) {
-            $reportsToShow = $config['reports_to_show'];
-            $classFQN = GoogleAnalyticsService::class;
-            $parameters[0] = $config['date_from'];
-            $parameters[1] = $config['date_to'];
-            /** @var GoogleAnalyticsService $class */
-            $class = new $classFQN($this->container);
-            $widgetsToRender = [];
-            $i = 0;
-
+        $reportsToShow = $config['reports_to_show'];
+        $classFQN = GoogleAnalyticsService::class;
+        $parameters[0] = $this->transformDateToGoogleAnalyticsFormat($config['date_from']);
+        $parameters[1] = $this->transformDateToGoogleAnalyticsFormat($config['date_to']);
+        /** @var GoogleAnalyticsService $class */
+        $class = new $classFQN($this->container);
+        $widgetsToRender = [];
+        $i = 0;
             foreach ($reportsToShow as $action) {
                 $data = call_user_func_array([$class, $action], $parameters);
                 $templateName = $this->prepareTemplateNameFromFunctionName($action);
@@ -69,7 +74,7 @@ class GoogleAnalyticsExtension extends AppExtension
             return $widgetsToRender;
         } else {
             return null;
-        }
+        }   
     }
 
     /**
@@ -79,6 +84,16 @@ class GoogleAnalyticsExtension extends AppExtension
     public function toJson(array $data)
     {
         return json_encode($data);
+    }
+
+    protected function transformDateToGoogleAnalyticsFormat(string $date)
+    {
+        $today = new \DateTime();
+        $userDate = \DateTime::createFromFormat('d.m.Y', $date);
+        $diff = $userDate->diff($today)->days;
+        $preparedValue = $diff > 0 ? $diff . self::GOOGLE_DAYS_AGO_PREFIX : self::GOOGLE_TODAY_PREFIX;
+
+        return $preparedValue;
     }
 
     private function prepareTemplateNameFromFunctionName(string $functionName)
