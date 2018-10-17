@@ -37,7 +37,7 @@ class AdminController extends AppController
      */
     public function indexAction()
     {
-        $gaConfig = Yaml::parseFile($this->getParameter('google_analytics_config'));
+        $gaConfig = $this->googleAnalytics->getGoogleAnalyticsConfig(false);
 
         return $this->render('@App/admin/layout/index.html.twig', [
             'gaConfig' => $gaConfig,

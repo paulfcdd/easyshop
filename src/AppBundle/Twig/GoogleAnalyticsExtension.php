@@ -42,8 +42,17 @@ class GoogleAnalyticsExtension extends AppExtension
         ];
     }
 
-    public function renderGoogleAnalyticsWidgets(array $config)
+
+        /**
+     * @param array|null $config
+     * @return array|null
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function renderGoogleAnalyticsWidgets(array $config = null)
     {
+        if ($config) {
         $reportsToShow = $config['reports_to_show'];
         $classFQN = GoogleAnalyticsService::class;
         $parameters[0] = $this->transformDateToGoogleAnalyticsFormat($config['date_from']);
@@ -52,18 +61,20 @@ class GoogleAnalyticsExtension extends AppExtension
         $class = new $classFQN($this->container);
         $widgetsToRender = [];
         $i = 0;
+            foreach ($reportsToShow as $action) {
+                $data = call_user_func_array([$class, $action], $parameters);
+                $templateName = $this->prepareTemplateNameFromFunctionName($action);
+                $widget = $this->environment->render(('@App/admin/partials/'.$templateName.'.html.twig'), [
+                    'data' => $data
+                ]);
+                $widgetsToRender[$i] = $widget;
+                $i++;
+            }
 
-        foreach ($reportsToShow as $action) {
-            $data = call_user_func_array([$class, $action], $parameters);
-            $templateName = $this->prepareTemplateNameFromFunctionName($action);
-            $widget = $this->environment->render(('@App/admin/partials/'.$templateName.'.html.twig'), [
-                'data' => $data
-            ]);
-            $widgetsToRender[$i] = $widget;
-            $i++;
-        }
-
-        return $widgetsToRender;
+            return $widgetsToRender;
+        } else {
+            return null;
+        }   
     }
 
     /**

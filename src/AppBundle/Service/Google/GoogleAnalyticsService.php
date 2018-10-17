@@ -126,7 +126,7 @@ class GoogleAnalyticsService extends GoogleAbstractService
         $this->client->setApplicationName($this->container->getParameter('google_analytics_application_name'));
         $this->client->setAuthConfig($this->container->getParameter('google_analytics_credentials'));
         $this->client->setScopes([$this->container->getParameter('google_analytics_scopes')]);
-        $this->config = $this->getConfig();
+        $this->config = $this->getGoogleAnalyticsConfig();
 
         return new \Google_Service_Analytics($this->client);
     }
@@ -214,14 +214,20 @@ class GoogleAnalyticsService extends GoogleAbstractService
      *
      * @return \stdClass | array
      */
-    private function getConfig(bool $isObject = true)
+    public final function getGoogleAnalyticsConfig(bool $isObject = true)
     {
-        $config = Yaml::parseFile($this->container->getParameter('google_analytics_config'));
+        $gaConfigFile = $this->container->getParameter('google_analytics_config');
 
-        if ($isObject) {
-            return (object)$config;
+        if (!is_file($gaConfigFile)) {
+            return null;
+        } else {
+            $config = Yaml::parseFile($gaConfigFile);
+
+            if ($isObject) {
+                return (object)$config;
+            }
+
+            return $config;
         }
-
-        return $config;
     }
 }
