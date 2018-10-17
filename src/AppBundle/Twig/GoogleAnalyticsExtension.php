@@ -37,28 +37,39 @@ class GoogleAnalyticsExtension extends AppExtension
         ];
     }
 
-    public function renderGoogleAnalyticsWidgets( array $config)
+    /**
+     * @param array|null $config
+     * @return array|null
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function renderGoogleAnalyticsWidgets(array $config = null)
     {
-        $reportsToShow = $config['reports_to_show'];
-        $classFQN = GoogleAnalyticsService::class;
-        $parameters[0] = $config['date_from'];
-        $parameters[1] = $config['date_to'];
-        /** @var GoogleAnalyticsService $class */
-        $class = new $classFQN($this->container);
-        $widgetsToRender = [];
-        $i = 0;
+        if ($config) {
+            $reportsToShow = $config['reports_to_show'];
+            $classFQN = GoogleAnalyticsService::class;
+            $parameters[0] = $config['date_from'];
+            $parameters[1] = $config['date_to'];
+            /** @var GoogleAnalyticsService $class */
+            $class = new $classFQN($this->container);
+            $widgetsToRender = [];
+            $i = 0;
 
-        foreach ($reportsToShow as $action) {
-            $data = call_user_func_array([$class, $action], $parameters);
-            $templateName = $this->prepareTemplateNameFromFunctionName($action);
-            $widget = $this->environment->render(('@App/admin/partials/'.$templateName.'.html.twig'), [
-                'data' => $data
-            ]);
-            $widgetsToRender[$i] = $widget;
-            $i++;
+            foreach ($reportsToShow as $action) {
+                $data = call_user_func_array([$class, $action], $parameters);
+                $templateName = $this->prepareTemplateNameFromFunctionName($action);
+                $widget = $this->environment->render(('@App/admin/partials/'.$templateName.'.html.twig'), [
+                    'data' => $data
+                ]);
+                $widgetsToRender[$i] = $widget;
+                $i++;
+            }
+
+            return $widgetsToRender;
+        } else {
+            return null;
         }
-
-        return $widgetsToRender;
     }
 
     /**
