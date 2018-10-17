@@ -77,9 +77,7 @@ class GoogleController extends AbstractGoogleController
      */
     protected function getConfig()
     {
-        $config = Yaml::parseFile($this->getParameter('google_analytics_config'));
-
-        return $config;
+        return $this->googleAnalyticsService->getGoogleAnalyticsConfig();
     }
 
     /**

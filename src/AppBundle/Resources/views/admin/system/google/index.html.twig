@@ -30,83 +30,93 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="g_analytics">
 
-                            <form autocomplete="off"
-                                  action="{{ path('app.admin.system.google_analytics_handle_config') }}"
-                                  method="post">
-
-                                <input autocomplete="false" name="hidden" type="text" style="display:none;">
-
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="account_id">Select active account:</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <select class="form-control" id="account_id" name="account_id">
-                                                <option selected disabled>Select an account</option>
-
-                                                {% for account in accountList %}
-                                                    <option value="{{ account.id }}"
-                                                            {% if config.active_account_id == account.id %}selected{% endif %}>
-                                                        {{ account.name }}
-                                                    </option>
-                                                {% endfor %}
-
-                                            </select>
-                                        </div>
-                                    </div>
+                            {% if config is null %}
+                                <div class="alert alert-warning">
+                                    <strong>Warning!</strong>
+                                    <br>
+                                    <p>
+                                        Can not load Google Analytics config file in <u>{{ google_analytics_config_path }}</u>
+                                    </p>
                                 </div>
+                                {% else %}
+                                    <form autocomplete="off"
+                                          action="{{ path('app.admin.system.google_analytics_handle_config') }}"
+                                          method="post">
 
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label>Select dates interval: </label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="input-group input-daterange" id="picker-container">
-                                                <input type="text" data-datepicker class="form-control actual_range"
-                                                       name="date_from" id="date_from"
-                                                       data-value="{{ config.date_from }}">
-                                                <div class="input-group-addon">to</div>
-                                                <input type="text" data-datepicker class="form-control" name="date_to"
-                                                       id="date_to" data-value="{{ config.date_to }}"
-                                                       data-date-end-date="0d">
+                                        <input autocomplete="false" name="hidden" type="text" style="display:none;">
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="account_id">Select active account:</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <select class="form-control" id="account_id" name="account_id">
+                                                        <option selected disabled>Select an account</option>
+
+                                                        {% for account in accountList %}
+                                                            <option value="{{ account.id }}"
+                                                                    {% if config.active_account_id == account.id %}selected{% endif %}>
+                                                                {{ account.name }}
+                                                            </option>
+                                                        {% endfor %}
+
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                   <div class="row">
-                                       <div class="col-md-4">
-                                           <label>Select reports to show: </label>
-                                       </div>
-                                       <div class="col-md-8">
-                                           {% for key, value in reportOptions %}
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label>Select dates interval: </label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="input-group input-daterange" id="picker-container">
+                                                        <input type="text" data-datepicker class="form-control actual_range"
+                                                               name="date_from" id="date_from"
+                                                               data-value="{{ config.date_from }}">
+                                                        <div class="input-group-addon">to</div>
+                                                        <input type="text" data-datepicker class="form-control" name="date_to"
+                                                               id="date_to" data-value="{{ config.date_to }}"
+                                                               data-date-end-date="0d">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                               <label class="checkbox-inline">
-                                                   <input type="checkbox" value="{{ key }}"
-                                                          name="reports_to_show[]"
-                                                           {% if key in config.reports_to_show %}
-                                                               checked
-                                                           {% endif %}
-                                                   >
-                                                   {{ value }}
-                                               </label>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label>Select reports to show: </label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    {% for key, value in reportOptions %}
 
-                                           {% endfor %}
-                                       </div>
-                                   </div>
-                                </div>
+                                                        <label class="checkbox-inline">
+                                                            <input type="checkbox" value="{{ key }}"
+                                                                   name="reports_to_show[]"
+                                                                    {% if key in config.reports_to_show %}
+                                                                        checked
+                                                                    {% endif %}
+                                                            >
+                                                            {{ value }}
+                                                        </label>
 
-                                <div class="form-group">
-                                   <div class="row">
-                                       <div class="col-md-12">
-                                           <button type="submit" class="btn btn-success">Save config</button>
-                                       </div>
-                                   </div>
-                                </div>
-                            </form>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="btn btn-success">Save config</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                            {% endif %}
                         </div>
                         <!-- /.tab-pane -->
                     </div>
