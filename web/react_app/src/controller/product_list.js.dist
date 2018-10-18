@@ -1,0 +1,80 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import axios from "axios/index";
+
+const containerId = 'react_new_products_grid';
+const apiPath = '/app_dev.php/api/get-products';
+
+export default class ProductList extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            posts: []
+        };
+    }
+
+    componentDidMount() {
+        axios.get(apiPath)
+            .then(res => {
+                const posts = res.data.map(obj => obj);
+                this.setState({ posts });
+            });
+    }
+
+    render() {
+        return (
+            <div>
+                <ul>
+                    {this.state.posts.map(post =>
+                        <div className="new-collections-grid1 products-right-grid1 animated wow slideInUp col-md-3"
+                             data-wow-delay=".5s">
+                            <div className="new-collections-grid1-image">
+                                <a href="single.html" className="product-image">
+                                    <img src="images/19.jpg" alt=" " className="img-responsive"/>
+                                </a>
+                                <div className="new-collections-grid1-image-pos products-right-grids-pos">
+                                    <a href="/app_dev.php/product/phones/iphone-se-32gb-space-gray">Quick View</a>
+                                </div>
+                                <div className="new-collections-grid1-right products-right-grids-pos-right">
+                                    <div className="rating">
+                                        <div className="rating-left">
+                                            <img src="images/2.png" alt=" " className="img-responsive"/>
+                                        </div>
+                                        <div className="rating-left">
+                                            <img src="images/2.png" alt=" " className="img-responsive"/>
+                                        </div>
+                                        <div className="rating-left">
+                                            <img src="images/2.png" alt=" " className="img-responsive"/>
+                                        </div>
+                                        <div className="rating-left">
+                                            <img src="images/1.png" alt=" " className="img-responsive"/>
+                                        </div>
+                                        <div className="rating-left">
+                                            <img src="images/1.png" alt=" " className="img-responsive"/>
+                                        </div>
+                                        <div className="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4><a href="/app_dev.php/product/phones/iphone-se-32gb-space-gray">{post.name}</a></h4>
+                            <p>Vel illum qui dolorem.</p>
+                            <div className="simpleCart_shelfItem products-right-grid1-add-cart">
+                                <p>
+                                    <span className="item_price">$8499</span>
+                                    <a className="item_add" href="#">add to cart </a></p>
+                            </div>
+                        </div>
+                    )}
+                </ul>
+            </div>
+        );
+    }
+
+    static renderList(){
+         ReactDOM.render(
+            <ProductList subreddit="reactjs"/>,
+            document.getElementById(containerId)
+        );
+    }
+}

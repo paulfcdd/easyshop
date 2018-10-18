@@ -2,18 +2,24 @@
 
 const path = require('path');
 const glob = require('glob');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const htmlWebpackPlugin = new HtmlWebpackPlugin({
+    template: path.join(__dirname, "react_app/index.html"),
+    filename: "./index.html"
+});
 let webpack = require('webpack');
 
 console.log(__dirname);
 
 module.exports = {
     entry: {
-        "admin": glob.sync('./admin_files/js/*.js')
+        "app": glob.sync('./react_app/src/app.js'),
+        "app.min": glob.sync('./react_app/src/app.js')
     },
     watch: true,
     output: {
-        filename: 'admin.js',
-        path: path.resolve(__dirname + '/admin_files', 'dist')
+        filename: '[name].js',
+        path: path.resolve(__dirname + '/react_app', 'dist')
     },
     watchOptions: {
         aggregateTimeout: 300,
@@ -37,11 +43,15 @@ module.exports = {
             }
         ]
     },
+    resolve: {
+        extensions: ['*', '.js', '.jsx']
+    },
     stats: {
         colors: true
     },
     devtool: 'source-map',
     plugins: [
+        htmlWebpackPlugin,
         new webpack.optimize.UglifyJsPlugin({
             include: /\.min\.js$/,
             minimize: true

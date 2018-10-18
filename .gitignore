@@ -4,5 +4,6 @@ var/
 vendor/
 app/config/parameters.yml
 web/node_modules/*
+web/react_app/dist/*
 
 app/config/google/ga-config.yml

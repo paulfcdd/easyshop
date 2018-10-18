@@ -172,15 +172,10 @@ class AppController extends Controller
      */
     private function getFullTemplatePath(string $themeName, $fileName)
     {
-        $pattern = '@App/template/%theme_name%/%file_name%.html.twig';
+        $pattern = '@App/template/%s/%s.html.twig';
+        $templatePath = sprintf($pattern, $themeName, $fileName);
 
-        $pattern = str_replace(
-            ['%theme_name%', '%file_name%'],
-            [$themeName, $fileName],
-            $pattern
-        );
-
-        return $pattern;
+        return $templatePath;
     }
 
     private function prepareTemplateNameFromFunctionName(string $functionName)
